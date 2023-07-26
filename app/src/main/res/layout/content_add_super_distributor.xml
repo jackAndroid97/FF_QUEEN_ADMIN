@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+   >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.weiwangcn.betterspinner.library.BetterSpinner
+                android:id="@+id/spinner_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Select Type"
+                android:textColorHint="@color/grey_view"
+                android:background="@drawable/grey_box"
+                android:minHeight="48dp"
+                android:padding="8dp"/>
+
+            <com.weiwangcn.betterspinner.library.BetterSpinner
+                android:id="@+id/spinner_sup_dis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Select Super Distributor"
+                android:textColorHint="@color/grey_view"
+                android:background="@drawable/grey_box"
+                android:minHeight="48dp"
+                android:padding="8dp"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/_10sdp"/>
+
+
+            <com.weiwangcn.betterspinner.library.BetterSpinner
+                android:id="@+id/spinner_distributor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Select Distributor"
+                android:textColorHint="@color/grey_view"
+                android:background="@drawable/grey_box"
+                android:minHeight="48dp"
+                android:padding="8dp"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/_10sdp"/>
+
+            <com.weiwangcn.betterspinner.library.BetterSpinner
+                android:id="@+id/spinner_retailer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Select Retailer"
+                android:textColorHint="@color/grey_view"
+                android:background="@drawable/grey_box"
+                android:minHeight="48dp"
+                android:padding="8dp"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/_10sdp"/>
+
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:hint="Enter Name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:hint="Phone Number">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phone_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="number"
+                    android:maxLength="10"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:hint="Email ID">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textEmailAddress" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:hint="Password"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textPassword" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Add"
+                android:textColor="@color/white"/>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

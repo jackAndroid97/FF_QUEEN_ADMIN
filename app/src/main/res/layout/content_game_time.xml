@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="20dp">
+
+        <com.weiwangcn.betterspinner.library.BetterSpinner
+            android:id="@+id/spinner_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Select Game"
+            android:textColorHint="@color/grey_view"
+            android:background="@drawable/grey_box"
+            android:minHeight="48dp"
+            android:padding="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Start Time: "
+            android:layout_marginTop="@dimen/_10sdp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_38sdp"
+            android:textColor="@color/black"
+            android:hint="Start time"
+            android:id="@+id/s_time"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/_5sdp"
+            android:background="@drawable/grey_box"
+            android:layout_marginTop="@dimen/_5sdp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="End Time: "
+            android:layout_marginTop="@dimen/_10sdp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_38sdp"
+            android:textColor="@color/black"
+            android:hint="End time"
+            android:id="@+id/e_time"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/_5sdp"
+            android:background="@drawable/grey_box"
+            android:layout_marginTop="@dimen/_5sdp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_add"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Add"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+</RelativeLayout>

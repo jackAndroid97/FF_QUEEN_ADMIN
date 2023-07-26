@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/_10sdp"
+        >
+
+        <TextView
+            android:id="@+id/txt_date"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Choose Date"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/grey_box"
+            android:padding="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            />
+
+
+        <com.weiwangcn.betterspinner.library.BetterSpinner
+            android:id="@+id/slot_spinner"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:hint="Game Timing"
+            android:background="@drawable/grey_box"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_weight="1"
+            android:padding="@dimen/_5sdp"/>
+
+
+
+
+        <TextView
+            android:id="@+id/txt_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:layout_weight=".5"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/btn_box"
+            android:padding="@dimen/_8sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            />
+
+
+    </LinearLayout>
+
+    <android.widget.Button
+        android:id="@+id/btn_download"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:text="Download"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:textColor="@color/white"
+        android:layout_marginHorizontal="@dimen/_10sdp"/>
+
+    <TextView
+        android:id="@+id/no_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="No Result Found"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:visibility="gone"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true"
+        app:cardBackgroundColor="@color/primary_dark"
+        app:cardCornerRadius="5dp"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/_10sdp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Date"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="12sp"/>
+            <TextView
+                android:id="@+id/txt_baji"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Baji"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Bet"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="12sp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Amount"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="12sp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Status"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:id="@+id/rv_all_bid"
+        android:layout_marginBottom="60dp"
+        android:visibility="gone"/>
+
+</LinearLayout>

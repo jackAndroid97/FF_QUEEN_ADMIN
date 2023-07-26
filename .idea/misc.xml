@@ -1,0 +1,60 @@
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Karabi/Development/PlayWinAdmin/app/src/main/res/layout/activity_edit_result.xml" value="0.20416666666666666" />
+        <entry key="..\:/Karabi/Development/PlayWinAdmin/app/src/main/res/layout/activity_results.xml" value="0.14074074074074075" />
+        <entry key="app/src/main/res/drawable/custom_background.xml" value="0.171" />
+        <entry key="app/src/main/res/drawable/custom_outlined_box.xml" value="0.171" />
+        <entry key="app/src/main/res/drawable/grey_box.xml" value="0.1235" />
+        <entry key="app/src/main/res/drawable/ic_marquee.xml" value="0.171" />
+        <entry key="app/src/main/res/drawable/login_box.xml" value="0.171" />
+        <entry key="app/src/main/res/drawable/password.xml" value="0.171" />
+        <entry key="app/src/main/res/layout/activity_add_other_result.xml" value="0.18796296296296297" />
+        <entry key="app/src/main/res/layout/activity_banner.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/activity_betting_history.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/activity_circle.xml" value="0.23333333333333334" />
+        <entry key="app/src/main/res/layout/activity_edit_other_result.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/activity_edit_result.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/activity_fatafat.xml" value="0.23333333333333334" />
+        <entry key="app/src/main/res/layout/activity_game.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/activity_game_timings.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/activity_luck_seven.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.3522727272727273" />
+        <entry key="app/src/main/res/layout/activity_marquee.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/activity_result.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/activity_results.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/activity_select_game.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/activity_spin.xml" value="0.23333333333333334" />
+        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.10885416666666667" />
+        <entry key="app/src/main/res/layout/activity_thunder_bolt.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/activity_user.xml" value="0.23333333333333334" />
+        <entry key="app/src/main/res/layout/content_add_other_result.xml" value="0.18796296296296297" />
+        <entry key="app/src/main/res/layout/content_betting_history.xml" value="0.2937771345875543" />
+        <entry key="app/src/main/res/layout/content_edit_other_result.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/content_main.xml" value="0.23220973782771537" />
+        <entry key="app/src/main/res/layout/custom_game_timing_layout.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/custom_game_timing_layout2.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/custom_no_internet.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/custom_outlined_box.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/fragment_a_b_c.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/fragment_all_bid_history.xml" value="0.23333333333333334" />
+        <entry key="app/src/main/res/layout/fragment_current_bid_history.xml" value="0.23333333333333334" />
+        <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/game_layout.xml" value="0.24635416666666668" />
+        <entry key="app/src/main/res/layout/progress_dialog.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/single_bet_status.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/single_result.xml" value="0.24635416666666668" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.24739583333333334" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

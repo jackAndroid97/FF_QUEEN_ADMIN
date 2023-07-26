@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.ff_queen.admin">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Play_WinAdmin"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <activity
+            android:name=".Activities.GameOffActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.AddGameActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.AddGameTimeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.KoyelGameSelectActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.SelectGameActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.AddCommissionActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.ThaiActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.RetailerWithdrawActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.DistributorWithdrawActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.SuperDistributorWithdrawActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.WithdrawActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.CommissionActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.UserMoneyWithdrawActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.MoneyRequestActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.UsersActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.RetailerActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.DistributorActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.ViewSuperDistributorActivity"
+            android:exported="false"
+            android:label="Super Distributor"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.AddSuperDistributorActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.KoyelResultActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.KoyelBettingHistoryActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.AddResultKoyelActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.KoyelActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.TripuraLotteryActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.DrLotteryActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".EditOtherResultActivity"
+            android:exported="false"
+            android:label="@string/title_activity_edit_other_result"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.AddOtherResult"
+            android:exported="false"
+            android:label="@string/title_activity_add_other_result"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.EditResultActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.ResultActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.AddResultsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.BettingHistoryActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.GameTimingsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.Login_Activity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.SplashScreen"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Activities.LuckSevenActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.CircleActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.GameActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.ThunderBoltActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.SpinActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.UserActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.BannerActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.MarqueeActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+    </application>
+
+</manifest>
