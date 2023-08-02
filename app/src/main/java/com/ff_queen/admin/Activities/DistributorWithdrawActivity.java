@@ -50,7 +50,7 @@ public class DistributorWithdrawActivity extends AppCompatActivity {
         binding.contentDistributorWithdraw.rvMoneyRequest.setAdapter(adapter);
 
 
-        apiResponse.fetchAllWithdrawRequest(type);
+    //    apiResponse.fetchAllWithdrawRequest(type);
         apiResponse.getAllWithdrawRequest().observe(this, new Observer<List<Withdraw_All_Request_Model>>() {
             @Override
             public void onChanged(List<Withdraw_All_Request_Model> money_request_models) {

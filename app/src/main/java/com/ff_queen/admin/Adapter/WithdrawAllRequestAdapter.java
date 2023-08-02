@@ -81,19 +81,7 @@ public class WithdrawAllRequestAdapter extends RecyclerView.Adapter<WithdrawAllR
             @Override
             public void onClick(View view) {
 
-                if (type.equals("Super Distributor"))
-                {
-                    apiResponse.withdrawAllApproved(model.getSuper_dis_id(),model.getAmount(),model.getId(),type);
-                }
-                else if (type.equals("Distributor"))
-                {
-                    apiResponse.withdrawAllApproved(model.getDistributor_id(),model.getAmount(),model.getId(),type);
-                }
-                else if (type.equals("Retailer"))
-                {
-                    apiResponse.withdrawAllApproved(model.getRetailer_id(),model.getAmount(),model.getId(),type);
-                }
-
+                    apiResponse.withdrawAllApproved(model.getId(),model.getAmount(),model.getId());
 
             }
         });

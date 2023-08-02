@@ -100,27 +100,12 @@ public class ResultActivity extends AppCompatActivity {
                     //loadMore=true;
                     /*if (loadMore && (currentItems + scrollOutItems == totalItems)) {*/
                     page++;
-                    binding.contentResult.progres.setVisibility(View.VISIBLE);
+                   // binding.contentResult.progres.setVisibility(View.VISIBLE);
 
-                    if(game_id.equals("4")) {
+
                         fetchFatafatResult(String.valueOf(page));
-                    }else if(game_id.equals("11")) {
-                        fetchLuckyResult(String.valueOf(page));
-                    }else if(game_id.equals("7")) {
-                        fetchThunderResult(String.valueOf(page));
-                    }
-                    else if(game_id.equals("16")) {
-                        fetchCircleResult(String.valueOf(page));
-                    }
-                    else if(game_id.equals("6")) {
-                        fetchSpinResult(String.valueOf(page));
-                    }
-
-                    if(game_id.equals("4")){
-                        binding.contentResult.gameTypeTxt.setVisibility(View.GONE);
-                    }else {
                         binding.contentResult.gameTypeTxt.setVisibility(View.VISIBLE);
-                    }
+
 
                     /* }*/
                 }
@@ -139,21 +124,23 @@ public class ResultActivity extends AppCompatActivity {
 
     private void fetchFatafatResult(String page) {
         Call<String> call = myInterface.fetch_fatafat_result(page);
-//        Toast.makeText(this, "" + game_id, Toast.LENGTH_SHORT).show();
+        ProgressUtils.showLoadingDialog(ResultActivity.this);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String res = response.body();
                 if (res == null) {
                     Toast.makeText(ResultActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                    binding.contentResult.progres.setVisibility(View.GONE);
+                    //binding.contentResult.progres.setVisibility(View.GONE);
+                    ProgressUtils.cancelLoading();
                 } else {
                     try {
                         JSONArray jsonArray = new JSONArray(res);
                         if (jsonArray.length() == 0) {
                             Toast.makeText(ResultActivity.this, "Not timings found.", Toast.LENGTH_SHORT).show();
+
+                           // binding.contentResult.progres.setVisibility(View.GONE);
                             ProgressUtils.cancelLoading();
-                            binding.contentResult.progres.setVisibility(View.GONE);
 
                         } else {
                             for (int i = 0; i < jsonArray.length(); i++) {
@@ -171,11 +158,13 @@ public class ResultActivity extends AppCompatActivity {
 
                                 adapter.notifyDataSetChanged();
                             }
+                            ProgressUtils.cancelLoading();
                         }
                     } catch (JSONException e) {
                         Toast.makeText(ResultActivity.this, "Something went wrong.", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
-                        binding.contentResult.progres.setVisibility(View.GONE);
+                        //binding.contentResult.progres.setVisibility(View.GONE);
+                        ProgressUtils.cancelLoading();
                     }
                 }
             }
@@ -183,7 +172,8 @@ public class ResultActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 Toast.makeText(ResultActivity.this, "Something wnet wrong.", Toast.LENGTH_SHORT).show();
-                binding.contentResult.progres.setVisibility(View.GONE);
+                //binding.contentResult.progres.setVisibility(View.GONE);
+                ProgressUtils.cancelLoading();
             }
         });
     }
@@ -413,20 +403,11 @@ public class ResultActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
             holder.date.setText(models.get(position).result_date);
 
-            holder.starting_time.setText(models.get(position).time);
-            if(game_id.equals("4")){
+                holder.starting_time.setText(models.get(position).time);
                 holder.game_type.setVisibility(View.GONE);
-            }else {
                 holder.game_type.setVisibility(View.VISIBLE);
-            }
 
-            if(game_id.equals("6")){
-                holder.game_type.setVisibility(View.GONE);
-              //  holder.editBtn.setVisibility(View.GONE);
-            }else {
-                holder.game_type.setVisibility(View.VISIBLE);
-               // holder.editBtn.setVisibility(View.VISIBLE);
-            }
+
 
             holder.game_type.setText(models.get(position).cat_name);
             holder.result.setText(models.get(position).result);
@@ -436,7 +417,7 @@ public class ResultActivity extends AppCompatActivity {
 
             holder.editBtn.setOnClickListener(view -> {
                 try {
-                if(game_id.equals("4")) {
+
 
                     if (models.get(position).type.equals("OPEN") && models.get(position).result_date.equals(formattedDate)) {
                         Bundle bundle = new Bundle();
@@ -446,6 +427,8 @@ public class ResultActivity extends AppCompatActivity {
                         bundle.putString("result_result", models.get(position).result);
                         bundle.putString("result_date", models.get(position).result_date);
                         bundle.putString("game_time", models.get(position).time);
+                        bundle.putString("game_name", game_name);
+                        bundle.putString("game_id", game_id);
                         context.startActivity(new Intent(context, EditResultActivity.class).putExtras(bundle));
                     } else if (df.parse(models.get(position).result_date).after(df.parse(formattedDate)) ) {
                                 Bundle bundle = new Bundle();
@@ -454,110 +437,18 @@ public class ResultActivity extends AppCompatActivity {
                                 bundle.putString("result_category", models.get(position).cat_name);
                                 bundle.putString("result_result", models.get(position).result);
                                 bundle.putString("result_date", models.get(position).result_date);
-                        bundle.putString("game_time", models.get(position).time);
+                                bundle.putString("game_time", models.get(position).time);
+                                bundle.putString("game_name", game_name);
+                                bundle.putString("game_id", game_id);
                                 context.startActivity(new Intent(context, EditResultActivity.class).putExtras(bundle));
                     } else {
                         Toast.makeText(context, "Result Timeout!", Toast.LENGTH_SHORT).show();
                     }
 
 
-                }else if(game_id.equals("11")) {
-                    if (models.get(position).type.equals("OPEN") && models.get(position).result_date.equals(formattedDate)) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("result_id", models.get(position).id);
-                        bundle.putString("game_time_id", models.get(position).game_time_id);
-                        bundle.putString("result_result", models.get(position).result);
-                        bundle.putString("result_date", models.get(position).result_date);
-                        bundle.putString("game_id", game_id);
-                        bundle.putString("game_time", models.get(position).time);
-                        context.startActivity(new Intent(context, EditOtherResultActivity.class).putExtras(bundle));
-                    }
-                    else if (df.parse(models.get(position).result_date).after(df.parse(formattedDate)) ) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("result_id", models.get(position).id);
-                        bundle.putString("game_id", game_id);
-                        bundle.putString("game_time_id", models.get(position).game_time_id);
-                        bundle.putString("result_result", models.get(position).result);
-                        bundle.putString("result_date", models.get(position).result_date);
-                        bundle.putString("game_time", models.get(position).time);
-                        context.startActivity(new Intent(context, EditOtherResultActivity.class).putExtras(bundle));
-                    }
-                    else {
-                        Toast.makeText(context, "Result Timeout!", Toast.LENGTH_SHORT).show();
-                    }
-                }else if(game_id.equals("7")) {
-                    if (models.get(position).type.equals("OPEN") && models.get(position).result_date.equals(formattedDate)) {
-                      //  Toast.makeText(context, "1", Toast.LENGTH_SHORT).show();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("result_id", models.get(position).id);
-                        bundle.putString("game_time_id", models.get(position).game_time_id);
-                        bundle.putString("result_result", models.get(position).result);
-                        bundle.putString("result_date", models.get(position).result_date);
-                        bundle.putString("game_id", game_id);
-                        bundle.putString("game_time", models.get(position).time);
-                        context.startActivity(new Intent(context, EditOtherResultActivity.class).putExtras(bundle));
-                    } else if (df.parse(models.get(position).result_date).after(df.parse(formattedDate)) ) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("result_id", models.get(position).id);
-                        bundle.putString("game_time_id", models.get(position).game_time_id);
-                        bundle.putString("game_id", game_id);
-                        bundle.putString("result_result", models.get(position).result);
-                        bundle.putString("result_date", models.get(position).result_date);
-                        bundle.putString("game_time", models.get(position).time);
-                        context.startActivity(new Intent(context, EditOtherResultActivity.class).putExtras(bundle));
-                    }else {
-                        Toast.makeText(context, "Result Timeout!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else if(game_id.equals("16")) {
-                    if (models.get(position).type.equals("OPEN") && models.get(position).result_date.equals(formattedDate)) {
-                      //  Toast.makeText(context, "1", Toast.LENGTH_SHORT).show();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("result_id", models.get(position).id);
-                        bundle.putString("game_time_id", models.get(position).game_time_id);
-                        bundle.putString("result_result", models.get(position).result);
-                        bundle.putString("result_date", models.get(position).result_date);
-                        bundle.putString("game_id", game_id);
-                        bundle.putString("game_time", models.get(position).time);
-                        context.startActivity(new Intent(context, EditOtherResultActivity.class).putExtras(bundle));
-                    } else if (df.parse(models.get(position).result_date).after(df.parse(formattedDate)) ) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("result_id", models.get(position).id);
-                        bundle.putString("game_time_id", models.get(position).game_time_id);
-                        bundle.putString("result_result", models.get(position).result);
-                        bundle.putString("result_date", models.get(position).result_date);
-                        bundle.putString("game_time", models.get(position).time);
-                        bundle.putString("game_id", game_id);
-                        context.startActivity(new Intent(context, EditOtherResultActivity.class).putExtras(bundle));
-                    }else {
-                        Toast.makeText(context, "Result Timeout!", Toast.LENGTH_SHORT).show();
 
-                    }
-                }
-                else if(game_id.equals("6")) {
-                    if (models.get(position).type.equals("OPEN") && models.get(position).result_date.equals(formattedDate)) {
-                       // Toast.makeText(context, "1", Toast.LENGTH_SHORT).show();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("result_id", models.get(position).id);
-                        bundle.putString("game_time_id", models.get(position).game_time_id);
-                        bundle.putString("result_result", models.get(position).result);
-                        bundle.putString("result_date", models.get(position).result_date);
-                        bundle.putString("game_id", game_id);
-                        bundle.putString("game_time", models.get(position).time);
-                        context.startActivity(new Intent(context, EditOtherResultActivity.class).putExtras(bundle));
-                    } else if (df.parse(models.get(position).result_date).after(df.parse(formattedDate)) ) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("result_id", models.get(position).id);
-                        bundle.putString("game_time_id", models.get(position).game_time_id);
-                        bundle.putString("result_result", models.get(position).result);
-                        bundle.putString("result_date", models.get(position).result_date);
-                        bundle.putString("game_time", models.get(position).time);
-                        bundle.putString("game_id", game_id);
-                        context.startActivity(new Intent(context, EditOtherResultActivity.class).putExtras(bundle));
-                    }else {
-                        Toast.makeText(context, "Result Timeout!", Toast.LENGTH_SHORT).show();
-                    }
-                }
+
+
 
                 } catch (ParseException e) {
                     e.printStackTrace();

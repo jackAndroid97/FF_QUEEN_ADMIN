@@ -68,11 +68,11 @@ public class GameActivity extends AppCompatActivity {
             Bundle bundle = new Bundle();
             bundle.putString("game_id",game_id);
             bundle.putString("game_name",game_name);
-            if(game_id.equals("4")) {
+         //   if(game_id.equals("4")) {
                 startActivity(new Intent(this, AddResultsActivity.class).putExtras(bundle));
-            }else{
+           /* }else{
                 startActivity(new Intent(this, AddOtherResult.class).putExtras(bundle));
-            }
+            }*/
         });
 
         resultBtn.setOnClickListener(v -> {

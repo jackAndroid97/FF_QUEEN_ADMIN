@@ -390,43 +390,6 @@ public class ApiResponse extends ViewModel {
     }
 
 
-    public void fetchAllWithdrawRequest(String user_type)
-    {
-
-        Call<List<Withdraw_All_Request_Model>> call = myInterface.fetch_all_withdraw_req();
-        call.enqueue(new Callback<List<Withdraw_All_Request_Model>>() {
-            @Override
-            public void onResponse(Call<List<Withdraw_All_Request_Model>> call, Response<List<Withdraw_All_Request_Model>> response) {
-
-                if (response.isSuccessful() && response.body() !=null)
-                {
-                    JSONArray jsonArray = new JSONArray(response.body());
-
-                    if (jsonArray.length()==0)
-                    {
-                        Toast.makeText(context, "No Withdrawal Request Found", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
-                        modelList_all_withdraw.postValue(response.body());
-                    }
-
-
-                }
-                else
-                {
-
-                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Withdraw_All_Request_Model>> call, Throwable t) {
-
-                Toast.makeText(context, "Slow Network", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
 
     public void approvedRequest(String s_dis_id, String amount, String id)
@@ -532,9 +495,9 @@ public class ApiResponse extends ViewModel {
     }
 
 
-    public void withdrawAllApproved(String user_id, String amount, String id, String user_type)
+    public void withdrawAllApproved(String user_id, String amount, String id)
     {
-        Call<String> call = myInterface.withdraw_approved_all(amount,user_id,id,user_type);
+        Call<String> call = myInterface.withdraw_approved_all(amount,user_id,id);
         ProgressUtils.showLoadingDialog(context);
         call.enqueue(new Callback<String>() {
             @Override

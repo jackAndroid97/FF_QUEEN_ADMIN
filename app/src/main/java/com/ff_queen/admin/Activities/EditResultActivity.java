@@ -3,6 +3,7 @@ package com.ff_queen.admin.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.view.MenuItem;
@@ -41,7 +42,7 @@ public class EditResultActivity extends AppCompatActivity {
     private TextView addResultBtn;
     private MyInterface myInterface;
     private String result_id;
-    private String game_time_id;
+    private String game_time_id,game_name,game_id;
     private String result_category;
     private List<Spin_Wining_No_Model> spin_wining_no_models_list = new ArrayList<>();
     private String result_result;
@@ -76,6 +77,8 @@ public class EditResultActivity extends AppCompatActivity {
         result_result = getIntent().getStringExtra("result_result");
         result_date = getIntent().getStringExtra("result_date");
         game_time = getIntent().getStringExtra("game_time");
+        game_name = getIntent().getStringExtra("game_name");
+        game_id = getIntent().getStringExtra("game_id");
 
         categoryList.add(result_category);
         slotList.add(game_time_id);
@@ -192,12 +195,12 @@ public class EditResultActivity extends AppCompatActivity {
     private void addResult() {
         ProgressUtils.showLoadingDialog(this);
         String newResult="";
-        if(result_category.equals("SINGLE")) {
+      /*  if(result_category.equals("SINGLE")) {
              newResult = winningNumberEditTxt.getText().toString();
         }else{
             newResult=wining_no_spinner.getText().toString();
-        }
-        Call<String> call = myInterface.edit_result(result_id,game_time_id,newResult);
+        }*/
+        Call<String> call = myInterface.edit_result(result_id,game_time_id,winningNumberEditTxt.getText().toString());
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -214,8 +217,13 @@ public class EditResultActivity extends AppCompatActivity {
                             Toast.makeText(EditResultActivity.this, "Sorry, failed to add result!", Toast.LENGTH_SHORT).show();
                         }
                         else if (jsonObject.getString("rec").equals("1")){
+                            Bundle bundle = new Bundle();
+                            bundle.putString("game_name",game_name);
+                            bundle.putString("game_id", game_id);
                             ProgressUtils.cancelLoading();
                             Toast.makeText(EditResultActivity.this, "Successfully Added!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(EditResultActivity.this, ResultActivity.class).putExtras(bundle));
+
                         }
                         else if (jsonObject.getString("rec").equals("2")){
                             ProgressUtils.cancelLoading();

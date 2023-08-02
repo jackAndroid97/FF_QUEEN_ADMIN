@@ -74,8 +74,8 @@ public class GameTimingsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(game_name);
 
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false);
-        binding.contentGameTimings.rvGameTimings.setLayoutManager(gridLayoutManager);
+        binding.contentGameTimings.rvGameTimings.setHasFixedSize(true);
+        binding.contentGameTimings.rvGameTimings.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         adapter = new GameTimeAdapter(GameTimingsActivity.this, timing_model_list);
         binding.contentGameTimings.rvGameTimings.setAdapter(adapter);
 
@@ -187,7 +187,7 @@ public class GameTimingsActivity extends AppCompatActivity {
         @Override
         public GameTimeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.custom_game_timing_layout, parent, false);
+            View view = inflater.inflate(R.layout.single_timing, parent, false);
             return new GameTimeViewHolder(view);
         }
 
@@ -195,9 +195,9 @@ public class GameTimingsActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull GameTimeViewHolder holder, int position) {
 
             Glide.with(context).load(game_image).into(holder.imageView);
-            holder.startTime.setText(list.get(position).start_time);
+            holder.startTime.setText(list.get(position).start_time+" - ");
             holder.endTime.setText(list.get(position).end_time);
-            holder.baji.setText(list.get(position).baji);
+            holder.baji.setText("Baji: " +list.get(position).baji);
 
             if(game_image.equals("")){
                 Glide.with(context)
@@ -226,13 +226,13 @@ public class GameTimingsActivity extends AppCompatActivity {
             public GameTimeViewHolder(@NonNull View itemView) {
                 super(itemView);
 
-                imageView = itemView.findViewById(R.id.game_image);
-                startTime = itemView.findViewById(R.id.starting_time);
-                endTime = itemView.findViewById(R.id.ending_time);
+                imageView = itemView.findViewById(R.id.gameImage);
+                startTime = itemView.findViewById(R.id.start_time);
+                endTime = itemView.findViewById(R.id.end_time);
                 baji = itemView.findViewById(R.id.baji);
-                baji_text = itemView.findViewById(R.id.baji_text);
-                baji_text_2 = itemView.findViewById(R.id.baji_text_2);
-                lin_start_time = itemView.findViewById(R.id.lin_start_time);
+             //   baji_text = itemView.findViewById(R.id.baji_text);
+               // baji_text_2 = itemView.findViewById(R.id.baji_text_2);
+              //  lin_start_time = itemView.findViewById(R.id.lin_start_time);
             }
         }
     }

@@ -26,6 +26,10 @@
             android:exported="false"
             android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
         <activity
+            android:name=".Activities.Passbook"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
             android:name=".Activities.AddGameActivity"
             android:exported="false"
             android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />

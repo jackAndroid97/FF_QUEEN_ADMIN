@@ -34,9 +34,16 @@ public interface MyInterface {
     @GET("fetch_category.php")
     Call<String> fetch_category();
 
+    @GET("fetch_total_user.php")
+    Call<String> fetch_all_user();
+
     @FormUrlEncoded
     @POST("login.php")
     Call<String> login(@Field("email") String email, @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("change_status.php")
+    Call<String> change_status(@Field("status") String status, @Field("id") String id);
 
     @FormUrlEncoded
     @POST("add_game.php")
@@ -51,7 +58,9 @@ public interface MyInterface {
     @FormUrlEncoded
     @POST("fatafat_game_timings.php")
     Call<String> fatafat_game_timings(@Field("game_id") String game_id, @Field("page") String page, @Field("type") String type);
-
+    @FormUrlEncoded
+    @POST("fetch_time.php")
+    Call<String> fetch_time(@Field("game_id") String game_id);
     @FormUrlEncoded
     @POST("lucky_seven_game_timing.php")
     Call<String> fetchLuckyGameTimings(@Field("game_id") String game_id, @Field("page") String page, @Field("type") String type);
@@ -129,7 +138,8 @@ public interface MyInterface {
                             @Field("game_time_id") String slot_id,
                             @Field("result_date") String result_date,
                             @Field("category_id") String category_id,
-                            @Field("result") String winning_number);
+                            @Field("result") String winning_number,
+                            @Field("baji") String baji);
 
     @FormUrlEncoded
     @POST("add_lucky_seven_result.php")
@@ -251,8 +261,12 @@ public interface MyInterface {
     @GET("fetch_banner_image.php")
     Call<String> fetch_banner_image();
 
-    @GET("fetch_all_user.php")
-    Call<String> fetch_all_user();
+    @FormUrlEncoded
+    @POST("fetch_all_user.php")
+    Call<String> fetch_all_user(@Field("number") String number);
+    @FormUrlEncoded
+    @POST("credit_debit.php")
+    Call<String> insert_wallet_money(@Field("user_id") String user_id,@Field("type") String type, @Field("amount") String amt,@Field("remarks") String remarks);
 
     @FormUrlEncoded
     @POST("fetch_koyel_result.php")
@@ -283,6 +297,7 @@ public interface MyInterface {
     @GET("fetch_money_request.php")
     Call<List<Money_Request_Model>> fetch_money_request();
 
+
     @FormUrlEncoded
     @POST("approved_request.php")
     Call<String> approved_request(@Field("amount") String amount, @Field("s_dis_id") String s_dis_id, @Field("id") String id);
@@ -292,7 +307,8 @@ public interface MyInterface {
 
 
     @GET("fetch_withdraw_req.php")
-    Call<List<Withdraw_All_Request_Model>> fetch_all_withdraw_req();
+    Call<String> fetch_all_withdraw_req();
+
 
     @FormUrlEncoded
     @POST("withdraw_approved.php")
@@ -300,8 +316,8 @@ public interface MyInterface {
 
     @FormUrlEncoded
     @POST("withdraw_approved_all.php")
-    Call<String> withdraw_approved_all(@Field("amount") String amount, @Field("user_id") String user_id, @Field("id") String id,
-                                       @Field("user_type") String user_type);
+    Call<String> withdraw_approved_all(@Field("amount") String amount, @Field("user_id") String user_id, @Field("id") String id
+                                      );
 
     @FormUrlEncoded
     @POST("fetch_commission.php")
@@ -316,6 +332,11 @@ public interface MyInterface {
 
     @POST("thndbolt_admin_fetch.php")
     Call<String> thunderball_csv(@Body JsonObject body);
+
+    @FormUrlEncoded
+    @POST("passbook.php")
+    Call<String> fetch_transaction_history(@Field("user_id") String user_id);
+
 
     @POST("circle_fetch_admin.php")
     Call<String> circle_csv(@Body JsonObject body);

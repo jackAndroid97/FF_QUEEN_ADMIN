@@ -1,14 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Activities.UserActivity"
     >
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:id="@+id/lin"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/text_date"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_30sdp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:hint="Mobile Number"
+            android:maxLength="10"
+            android:background="@drawable/grey_box"/>
+        <TextView
+            android:id="@+id/button_search"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="@dimen/_30sdp"
+            android:background="@drawable/btn_back"
+            android:clickable="true"
+            android:foreground="@drawable/ripple_button"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:text="Search"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:fontFamily="@font/fonts_medium"
+            android:textStyle="bold"
+            android:textSize="12sp"
+            android:gravity="center"/>
+    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_user"
         android:layout_width="match_parent"
@@ -19,4 +54,4 @@
         tools:itemCount="3"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
-</RelativeLayout>
+</LinearLayout>

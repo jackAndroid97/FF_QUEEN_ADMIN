@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ff_queen.admin.Models.G_T_Model;
+import com.ff_queen.admin.Models.Game_Model;
 import com.google.android.material.textfield.TextInputLayout;
 import com.ff_queen.admin.Interfaces.MyInterface;
 import com.ff_queen.admin.Models.Category;
@@ -41,7 +43,7 @@ import retrofit2.Response;
 
 public class AddResultsActivity extends AppCompatActivity {
 
-    private BetterSpinner categorySpinner, wining_no_spinner;
+    private BetterSpinner categorySpinner, wining_no_spinner,game_spinner;
     private BetterSpinner slotSpinner;
     private TextView dateTextView;
     private TextView selectDateBtn;
@@ -52,8 +54,9 @@ public class AddResultsActivity extends AppCompatActivity {
     private String[] sample = {"NO DATA"};
     private String categoryID = "";
     private String slotID = "";
+    private String baji = "";
     private String game_id, game_name;
-    private List<Timing_Model> timing_model_list = new ArrayList<>();
+    private List<G_T_Model> timing_model_list = new ArrayList<>();
     private List<Spin_Wining_No_Model> spin_wining_no_models_list = new ArrayList<>();
     private String winningNumber = "";
     int start_month, start_year, start_day;
@@ -64,7 +67,7 @@ public class AddResultsActivity extends AppCompatActivity {
     private String game_time_id;
     private String currentDate;
     private TextInputLayout til_winning_no;
-
+    List<Game_Model> game_models = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +82,7 @@ public class AddResultsActivity extends AppCompatActivity {
         addResultBtn = findViewById(R.id.add_result_btn);
         wining_no_spinner = findViewById(R.id.wining_no_spinner);
         til_winning_no = findViewById(R.id.til_winning_no);
+        game_spinner = findViewById(R.id.game_spinner);
 
         myInterface = ApiClient.getApiClient().create(MyInterface.class);
 
@@ -98,8 +102,7 @@ public class AddResultsActivity extends AppCompatActivity {
         result_id = getIntent().getStringExtra("result_id");
         game_time_id = getIntent().getStringExtra("game_time_id");
 
-        fetchCategory();
-        fetchGameTimings();
+
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, sample);
@@ -107,13 +110,18 @@ public class AddResultsActivity extends AppCompatActivity {
         categorySpinner.setAdapter(adapter);
         slotSpinner.setAdapter(adapter);
         wining_no_spinner.setAdapter(adapter);
+        game_spinner.setAdapter(adapter);
+
+       // fetchGame();
+        fetchCategory();
+        fetchGameTimings();
 
         categorySpinner.setOnItemClickListener((parent, view, position, id) -> {
             Category category = (Category) parent.getItemAtPosition(position);
             categoryID = category.id;
             selectedCategory = category.category;
 
-            if (selectedCategory.equals("SINGLE")) {
+         /*   if (selectedCategory.equals("SINGLE")) {
 
                 wining_no_spinner.setVisibility(View.GONE);
                 til_winning_no.setVisibility(View.VISIBLE);
@@ -125,13 +133,22 @@ public class AddResultsActivity extends AppCompatActivity {
                 wining_no_spinner.setVisibility(View.VISIBLE);
                 til_winning_no.setVisibility(View.GONE);
                 fetchFatafatWinningNo();
-                /*int maxLength = 3;
-                winningNumberEditTxt.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});*/
-            }
+                *//*int maxLength = 3;
+                winningNumberEditTxt.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});*//*
+            }*/
         });
 
+      /*  game_spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Game_Model game_model = (Game_Model) adapterView.getItemAtPosition(i);
+               String g_id = game_model.getId();
 
-        wining_no_spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            }
+        });*/
+
+
+      /*  wining_no_spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
@@ -140,23 +157,14 @@ public class AddResultsActivity extends AppCompatActivity {
                 winningNumber = model.getNo();
             }
         });
-
+*/
 
         slotSpinner.setOnItemClickListener((parent, view, position, id) -> {
-            Timing_Model timing_model = (Timing_Model) parent.getItemAtPosition(position);
-            if (dateTextView.getText().toString().equals(currentDate)) {
-                if (!timing_model.status.equals("CLOSED")) {
-                    slotID = timing_model.id;
-                    selectedSlot = timing_model.baji;
-                } else {
-                    slotID = "";
-                    selectedSlot = "";
-                    Toast.makeText(this, "Result timeout!", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                slotID = timing_model.id;
-                selectedSlot = timing_model.baji;
-            }
+            G_T_Model timing_model = (G_T_Model) parent.getItemAtPosition(position);
+            slotID = timing_model.getId();
+            baji = timing_model.getCount();
+            //selectedSlot = timing_model.baji;
+
         });
 
 //        winningNumber = winningNumberEditTxt.getText().toString();
@@ -197,21 +205,28 @@ public class AddResultsActivity extends AppCompatActivity {
 
         addResultBtn.setOnClickListener(v -> {
 
-            if (winningNumber.equals(""))
+           /* if (winningNumber.equals(""))
             {
                 winningNumber = winningNumberEditTxt.getText().toString();
             }
-
+*/
 
             if (slotID.equals("")) {
                 Toast.makeText(this, "Select a slot.", Toast.LENGTH_SHORT).show();
             } else if (categoryID.equals("")) {
                 Toast.makeText(this, "Select a category.", Toast.LENGTH_SHORT).show();
+            }
+            else if (categoryID.equals("")) {
+                Toast.makeText(this, "Select a category.", Toast.LENGTH_SHORT).show();
             } else if (dateTextView.getText().toString().equals("Please select a date") || dateTextView.getText().toString().isEmpty() || dateTextView.getText().toString() == null) {
                 Toast.makeText(this, "Select a date.", Toast.LENGTH_SHORT).show();
-            } else if (winningNumber.equals("")) {
+            } else if (winningNumberEditTxt.getText().toString().equals("")) {
                 Toast.makeText(this, "Enter a winning number", Toast.LENGTH_SHORT).show();
-            } else {
+            }
+            else if(selectedCategory.equals("JODI") && Integer.parseInt(baji)%2!=0){
+                Toast.makeText(this, "Jodi not available for this baji", Toast.LENGTH_SHORT).show();
+            }
+            else {
                 addResult();
             }
         });
@@ -219,7 +234,7 @@ public class AddResultsActivity extends AppCompatActivity {
 
     private void addResult() {
         String resultDate = dateTextView.getText().toString();
-        Call<String> call = myInterface.add_result(game_id, slotID, resultDate, categoryID, winningNumber);
+        Call<String> call = myInterface.add_result(game_id, slotID, resultDate, categoryID, winningNumberEditTxt.getText().toString().trim(),baji);
         ProgressUtils.showLoadingDialog(AddResultsActivity.this);
         call.enqueue(new Callback<String>() {
             @Override
@@ -306,7 +321,7 @@ public class AddResultsActivity extends AppCompatActivity {
     }
 
 
-    private void fetchFatafatWinningNo() {
+    /*private void fetchFatafatWinningNo() {
 
 
         Call<String> call = myInterface.fetch_fatafat_patti_no();
@@ -351,11 +366,11 @@ public class AddResultsActivity extends AppCompatActivity {
                 ProgressUtils.cancelLoading();
             }
         });
-    }
+    }*/
 
 
     private void fetchGameTimings() {
-        Call<String> call = myInterface.fatafat_game_timings(game_id, "","");
+        Call<String> call = myInterface.fetch_time(game_id);
        // Toast.makeText(this, "" + game_id, Toast.LENGTH_SHORT).show();
         call.enqueue(new Callback<String>() {
             @Override
@@ -373,15 +388,12 @@ public class AddResultsActivity extends AppCompatActivity {
                         } else {
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                timing_model_list.add(new Timing_Model(jsonObject.getString("id"),
-                                        jsonObject.getString("now_time"),
-                                        jsonObject.getString("status"),
+                                timing_model_list.add(new G_T_Model(jsonObject.getString("id"),
                                         jsonObject.getString("start_time"),
-                                        jsonObject.getString("end_time"),
-                                        jsonObject.getString("count"),
-                                        jsonObject.getString("date_status")
+                                        jsonObject.getString("count")
+
                                 ));
-                                ArrayAdapter<Timing_Model> adapter = new ArrayAdapter<Timing_Model>(AddResultsActivity.this,
+                                ArrayAdapter<G_T_Model> adapter = new ArrayAdapter<G_T_Model>(AddResultsActivity.this,
                                         android.R.layout.simple_dropdown_item_1line, timing_model_list);
 
                                 slotSpinner.setAdapter(adapter);
@@ -389,7 +401,7 @@ public class AddResultsActivity extends AppCompatActivity {
                             }
                         }
                     } catch (JSONException e) {
-                        Toast.makeText(AddResultsActivity.this, "Something went wrong.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddResultsActivity.this, "Something went wrong."+ e.getMessage(), Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                         ProgressUtils.cancelLoading();
                     }
@@ -402,6 +414,59 @@ public class AddResultsActivity extends AppCompatActivity {
                 ProgressUtils.cancelLoading();
             }
         });
+    }
+
+    private void fetchGame() {
+
+        Call<String> call = myInterface.fetch_active_game();
+        ProgressUtils.showLoadingDialog(AddResultsActivity.this);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.body() != null) {
+                    String res = response.body();
+                    try {
+                        JSONArray jsonArray = new JSONArray(res);
+                        if (jsonArray.length() == 0) {
+                            ProgressUtils.cancelLoading();
+
+                        } else {
+                            game_models.clear();
+                            for (int i=0; i<jsonArray.length(); i++)
+                            {
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                String game_id = jsonObject.getString("id");
+                                String game_name = jsonObject.getString("game_name");
+                                String game_image = jsonObject.getString("image");
+                                Game_Model model = new Game_Model(game_id,game_name,game_image);
+                                game_models.add(model);
+                            }
+                            ArrayAdapter<Game_Model> gameAdapter = new ArrayAdapter<>(AddResultsActivity.this,
+                                    android.R.layout.simple_dropdown_item_1line, game_models);
+                            game_spinner.setAdapter(gameAdapter);
+                            ProgressUtils.cancelLoading();
+
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        ProgressUtils.cancelLoading();
+                        Toast.makeText(AddResultsActivity.this, "" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(AddResultsActivity.this, "No Response", Toast.LENGTH_SHORT).show();
+                    ProgressUtils.cancelLoading();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                ProgressUtils.cancelLoading();
+                Toast.makeText(AddResultsActivity.this, "Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     @Override

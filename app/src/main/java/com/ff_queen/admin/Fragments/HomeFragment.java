@@ -24,6 +24,8 @@ import com.ff_queen.admin.Activities.CircleActivity;
 import com.ff_queen.admin.Activities.GameActivity;
 import com.ff_queen.admin.Activities.GameOffActivity;
 import com.ff_queen.admin.Activities.KoyelActivity;
+import com.ff_queen.admin.Activities.Login_Activity;
+import com.ff_queen.admin.Activities.MainActivity;
 import com.ff_queen.admin.Activities.MarqueeActivity;
 import com.ff_queen.admin.Activities.MoneyRequestActivity;
 import com.ff_queen.admin.Activities.SpinActivity;
@@ -64,7 +66,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private ImageView spin_image;
     private TextView circle_name;
     private ImageView circle_image;
-    private TextView thunder_bolt_name;
+    private TextView thunder_bolt_name,total_user;
     private ImageView thunder_bolt_image;
     private String fatafat_game_id;
     private String spin_game_id;
@@ -72,7 +74,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private String luck_seven_game_id;
     private String circle_game_id;
     private CardView card_fatafat;
-    private CardView card_spin;
+    private CardView card_spin,add_money;
     private CardView card_cirle;
     private CardView card_lucky_seven;
     private CardView card_thunder_bolt;
@@ -100,6 +102,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         marqueeBtn = view.findViewById(R.id.marquee_btn);
         bannerBtn = view.findViewById(R.id.banner_btn);
         userBtn = view.findViewById(R.id.user_btn);
+        total_user = view.findViewById(R.id.total_user);
 
         myInterface = ApiClient.getApiClient().create(MyInterface.class);
 
@@ -108,7 +111,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         card_fatafat = view.findViewById(R.id.fatafat_btn);
         card_lucky_seven = view.findViewById(R.id.lucky_7_btn);
         card_thunder_bolt = view.findViewById(R.id.thunder_bolt_btn);
-        add_game = view.findViewById(R.id.add_game);
+        add_money = view.findViewById(R.id.add_money);
         card_koyel = view.findViewById(R.id.card_koyel);
         add_super_dis_btn = view.findViewById(R.id.add_super_dis_btn);
         Game_time = view.findViewById(R.id.Game_time);
@@ -206,7 +209,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
-        add_game.setOnClickListener(new View.OnClickListener() {
+        add_money.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -224,7 +227,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
 
 
-
+        total_user();
         marqueeBtn.setOnClickListener(this);
         bannerBtn.setOnClickListener(this);
         userBtn.setOnClickListener(this);
@@ -349,6 +352,40 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
 
     }
+    private void total_user() {
 
+        Call<String> call = myInterface.fetch_all_user();
+        ProgressUtils.showLoadingDialog(getActivity());
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String res = response.body();
+                if (res == null){
+                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                    ProgressUtils.cancelLoading();
+                }
+                else {
+                    try {
+                        JSONObject jsonObject = new JSONObject(res);
+                        if (jsonObject.getString("rec").equals("0")) {
+                            total_user.setText("0 Users");
+                           // Toast.makeText(getActivity(), "Admin not found", Toast.LENGTH_SHORT).show();
+                            ProgressUtils.cancelLoading();
+                        } else {
+                            total_user.setText(jsonObject.getString("total_user")+" Users");
+                            ProgressUtils.cancelLoading();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(getActivity(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 }

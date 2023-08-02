@@ -591,6 +591,23 @@
                                 android:background="#ffd0d0"
                                 android:orientation="vertical">
 
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_alignParentBottom="true"
+                                        android:padding="10dp"
+                                        android:text="40"
+
+                                        android:textStyle="bold"
+                                        android:id="@+id/total_user"
+                                        android:textColor="@android:color/holo_red_dark"
+                                        android:textSize="15sp" />
+                                </LinearLayout>
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -695,10 +712,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         android:weightSum="3">
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/add_game"
+                            android:id="@+id/add_money"
                             android:layout_width="0dp"
                             android:layout_height="120dp"
                             android:layout_weight="1"
@@ -709,7 +727,7 @@
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:background="#F4B5CA"
+                                android:background="#d3ffd8"
                                 android:orientation="vertical">
 
                                 <ImageView
@@ -718,8 +736,8 @@
                                     android:layout_alignParentTop="true"
                                     android:layout_alignParentEnd="true"
                                     android:padding="10dp"
-                                    android:src="@drawable/console"
-                                    app:tint="#E3024D" />
+                                    android:src="@drawable/money"
+                                    app:tint="@android:color/holo_green_light" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -727,8 +745,8 @@
                                     android:layout_alignParentStart="true"
                                     android:layout_alignParentBottom="true"
                                     android:padding="10dp"
-                                    android:text="Add Game"
-                                    android:textColor="#E3024D"
+                                    android:text="Add Money"
+                                    android:textColor="@android:color/holo_green_light"
                                     android:textSize="15sp" />
 
                             </RelativeLayout>
@@ -783,6 +801,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+
                         android:weightSum="3">
 
                         <androidx.cardview.widget.CardView

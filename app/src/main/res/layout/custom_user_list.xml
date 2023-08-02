@@ -61,6 +61,86 @@
             android:textSize="12sp"
             android:layout_marginTop="@dimen/_5sdp"
             />
+        <TextView
+            android:id="@+id/wallet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Phone No"
+            android:padding="@dimen/_2sdp"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:layout_marginTop="@dimen/_5sdp"
+            />
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Phone No"
+            android:padding="@dimen/_2sdp"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:layout_marginTop="@dimen/_5sdp"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_5sdp"
+            >
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <ImageView
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:id="@+id/wallet_btn"
+                    android:src="@drawable/wallet"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_30sdp"
+                android:text="Passbook"
+                android:layout_weight="1"
+                android:id="@+id/passbook"
+                android:textAllCaps="false"
+                android:textColor="@color/green"
+               android:gravity="center_vertical"
+                android:textStyle="bold"
+               />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:text="Active"
+                    android:id="@+id/active"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:background="@color/green"/>
+                <TextView
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:text="Inactive"
+                    android:id="@+id/inactive"
+                    android:textAllCaps="false"
+                    android:visibility="visible"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:background="@color/red"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
 
     </LinearLayout>
 
