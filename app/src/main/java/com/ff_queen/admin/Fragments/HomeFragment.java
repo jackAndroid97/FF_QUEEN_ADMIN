@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private ImageView spin_image;
     private TextView circle_name;
     private ImageView circle_image;
-    private TextView thunder_bolt_name,total_user;
+    private TextView thunder_bolt_name,total_user,total_wallet;
     private ImageView thunder_bolt_image;
     private String fatafat_game_id;
     private String spin_game_id;
@@ -103,6 +103,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         bannerBtn = view.findViewById(R.id.banner_btn);
         userBtn = view.findViewById(R.id.user_btn);
         total_user = view.findViewById(R.id.total_user);
+        total_wallet = view.findViewById(R.id.total_wallet);
 
         myInterface = ApiClient.getApiClient().create(MyInterface.class);
 
@@ -369,10 +370,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         JSONObject jsonObject = new JSONObject(res);
                         if (jsonObject.getString("rec").equals("0")) {
                             total_user.setText("0 Users");
+                            total_wallet.setText("₹0");
                            // Toast.makeText(getActivity(), "Admin not found", Toast.LENGTH_SHORT).show();
                             ProgressUtils.cancelLoading();
                         } else {
-                            total_user.setText(jsonObject.getString("total_user")+" Users");
+                            total_user.setText(jsonObject.getString("total_user_count")+" Users");
+                            total_wallet.setText("₹"+jsonObject.getString("total_user_wallet"));
                             ProgressUtils.cancelLoading();
                         }
                     } catch (JSONException e) {

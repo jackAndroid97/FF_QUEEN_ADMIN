@@ -295,12 +295,14 @@ public interface MyInterface {
     Call<List<View_User_Model>> fetch_user(@Field("ref_code") String ref_code);
 
     @GET("fetch_money_request.php")
-    Call<List<Money_Request_Model>> fetch_money_request();
+    Call<String> fetch_money_request();
+
 
 
     @FormUrlEncoded
     @POST("approved_request.php")
-    Call<String> approved_request(@Field("amount") String amount, @Field("s_dis_id") String s_dis_id, @Field("id") String id);
+    Call<String> approved_request(@Field("amount") String amount, @Field("s_dis_id") String s_dis_id,
+                                  @Field("id") String id,@Field("status") String status,@Field("remarks") String remarks);
 
     @GET("fetch_user_withdraw_request.php")
     Call<List<Withdraw_Request_Model>> fetch_user_withdraw_request();
@@ -316,8 +318,8 @@ public interface MyInterface {
 
     @FormUrlEncoded
     @POST("withdraw_approved_all.php")
-    Call<String> withdraw_approved_all(@Field("amount") String amount, @Field("user_id") String user_id, @Field("id") String id
-                                      );
+    Call<String> withdraw_approved_all(@Field("amount") String amount, @Field("user_id") String user_id, @Field("id") String id,
+                                       @Field("status") String status,@Field("remarks") String remarks);
 
     @FormUrlEncoded
     @POST("fetch_commission.php")

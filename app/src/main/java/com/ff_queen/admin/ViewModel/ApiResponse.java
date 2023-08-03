@@ -312,43 +312,6 @@ public class ApiResponse extends ViewModel {
 
 
 
-    public void fetchMoneyRequest()
-    {
-
-        Call<List<Money_Request_Model>> call = myInterface.fetch_money_request();
-        call.enqueue(new Callback<List<Money_Request_Model>>() {
-            @Override
-            public void onResponse(Call<List<Money_Request_Model>> call, Response<List<Money_Request_Model>> response) {
-
-                if (response.isSuccessful() && response.body() !=null)
-                {
-                    JSONArray jsonArray = new JSONArray(response.body());
-
-                    if (jsonArray.length()==0)
-                    {
-                        Toast.makeText(context, "No Money Request Found", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
-                        modelList_money_request.postValue(response.body());
-                    }
-
-
-                }
-                else
-                {
-
-                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Money_Request_Model>> call, Throwable t) {
-
-                Toast.makeText(context, "Slow Network", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
 
     public void fetchUserWithdrawRequest()
@@ -392,10 +355,10 @@ public class ApiResponse extends ViewModel {
 
 
 
-    public void approvedRequest(String s_dis_id, String amount, String id)
+    public void approvedRequest(String s_dis_id, String amount, String id,String status,String remarks)
     {
 
-        Call<String> call = myInterface.approved_request(amount,s_dis_id,id);
+        Call<String> call = myInterface.approved_request(amount,s_dis_id,id,status,remarks);
         ProgressUtils.showLoadingDialog(context);
         call.enqueue(new Callback<String>() {
             @Override
@@ -409,7 +372,7 @@ public class ApiResponse extends ViewModel {
                         if (jsonObject.getString("rec").equals("1"))
                         {
 
-                            Toast.makeText(context, "Approved Successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show();
                             ProgressUtils.cancelLoading();
                             context.startActivity(new Intent(context,MoneyRequestActivity.class));
                             ((Activity)context).finish();
@@ -495,9 +458,9 @@ public class ApiResponse extends ViewModel {
     }
 
 
-    public void withdrawAllApproved(String user_id, String amount, String id)
+    public void withdrawAllApproved(String user_id, String amount, String id,String status,String remarks)
     {
-        Call<String> call = myInterface.withdraw_approved_all(amount,user_id,id);
+        Call<String> call = myInterface.withdraw_approved_all(amount,user_id,id,status,remarks);
         ProgressUtils.showLoadingDialog(context);
         call.enqueue(new Callback<String>() {
             @Override
@@ -511,7 +474,7 @@ public class ApiResponse extends ViewModel {
                         if (jsonObject.getString("rec").equals("1"))
                         {
 
-                            Toast.makeText(context, "Approved Successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show();
                             ProgressUtils.cancelLoading();
                             context.startActivity(new Intent(context, MainActivity.class));
                             ((Activity)context).finish();

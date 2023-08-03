@@ -1,7 +1,9 @@
 package com.ff_queen.admin.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.ff_queen.admin.Activities.Passbook;
 import com.ff_queen.admin.Models.Money_Request_Model;
 import com.ff_queen.admin.Models.User;
 import com.ff_queen.admin.ViewModel.ApiResponse;
@@ -74,14 +77,36 @@ public class MoneyRequestAdapter extends RecyclerView.Adapter<MoneyRequestAdapte
         holder.binding.amount.setText("₹ "+model.getAmount());
         holder.binding.date.setText(formatDate);
 
+        holder.binding.bankDetails.setText("Bank Name: "+ model.getBank_name()+"\n"+"Account No: "+model.getAccount_no()
+                +"\n"+"IFSC Code: "+model.getIfsc_code());
+        holder.binding.mobile.setText("Mobile Number: "+model.getMobile());
+        holder.binding.walletBalance.setText("Current Balance: ₹ "+model.getWallet());
+
         holder.binding.amount.setTextColor(Color.parseColor("#33A01D")); //Green
+        holder.binding.passbook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle=new Bundle();
+                bundle.putString("user_id",model.getUser_id());
+                context.startActivity(new Intent(context, Passbook.class).putExtras(bundle));
+
+            }
+        });
 
         holder.binding.btnApproed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
-                apiResponse.approvedRequest(model.getUser_id(),model.getAmount(),model.getId());
+                apiResponse.approvedRequest(model.getUser_id(),model.getAmount(),model.getId(),"Success",holder.binding.remarks.getText().toString());
+
+            }
+        });
+        holder.binding.btnReject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                apiResponse.approvedRequest(model.getUser_id(),model.getAmount(),model.getId(),"Reject",holder.binding.remarks.getText().toString());
 
             }
         });

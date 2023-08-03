@@ -102,7 +102,12 @@ public class SuperDistributorWithdrawActivity extends AppCompatActivity {
                                         jsonObject.getString("user_id"),
                                         jsonObject.getString("name"),
                                         jsonObject.getString("new_amount")+".00",
-                                        jsonObject.getString("date")
+                                        jsonObject.getString("date"),
+                                        jsonObject.getString("bank_name"),
+                                        jsonObject.getString("account_no"),
+                                        jsonObject.getString("ifsc_code"),
+                                        jsonObject.getString("mobile"),
+                                        jsonObject.getString("wallet")
                                 ));
                             }
                             adapter = new WithdrawAllRequestAdapter(SuperDistributorWithdrawActivity.this,withdraw_request_models, type);

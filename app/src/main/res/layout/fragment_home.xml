@@ -594,7 +594,7 @@
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
+                                    android:orientation="vertical">
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -606,6 +606,17 @@
                                         android:textStyle="bold"
                                         android:id="@+id/total_user"
                                         android:textColor="@android:color/holo_red_dark"
+                                        android:textSize="15sp" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_alignParentBottom="true"
+                                        android:paddingLeft="10dp"
+                                        android:text="40"
+                                        android:textStyle="bold"
+                                        android:id="@+id/total_wallet"
+                                        android:textColor="@android:color/holo_blue_light"
                                         android:textSize="15sp" />
                                 </LinearLayout>
                                 <ImageView
