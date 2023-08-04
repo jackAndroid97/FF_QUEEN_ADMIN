@@ -70,6 +70,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Edit"
+            android:visibility="gone"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="12sp"/>

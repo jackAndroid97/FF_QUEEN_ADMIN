@@ -53,14 +53,9 @@ public class GameActivity extends AppCompatActivity {
             Bundle bundle = new Bundle();
             bundle.putString("game_id",game_id);
             bundle.putString("game_name",game_name);
-            if (game_id.equals("4"))
-            {
-                startActivity(new Intent(this,SelectGameActivity.class).putExtras(bundle));
-            }
-            else
-            {
-                startActivity(new Intent(this,BettingHistoryActivity.class).putExtras(bundle));
-            }
+
+                startActivity(new Intent(this,SelectGames.class).putExtras(bundle));
+
 
         });
 

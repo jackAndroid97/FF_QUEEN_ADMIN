@@ -84,7 +84,7 @@
                     android:id="@+id/date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
+
                     android:gravity="center"
                     android:fontFamily="@font/fonts_medium"
                     android:textSize="12sp"
@@ -94,8 +94,8 @@
                     android:id="@+id/time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:layout_marginLeft="@dimen/_10sdp"
+
+                    android:layout_marginLeft="@dimen/_7sdp"
                     android:gravity="center"
                     android:fontFamily="@font/fonts_medium"
                     android:textSize="12sp"

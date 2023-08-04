@@ -503,6 +503,29 @@
                                 android:layout_height="match_parent"
                                 android:background="#F0F4C3"
                                 android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentStart="true"
+                                    android:paddingLeft="10dp"
+                                    android:text=""
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:textStyle="bold"
+                                    android:id="@+id/pending_count"
+                                    android:textColor="@android:color/holo_red_dark"
+                                    android:textSize="15sp" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentStart="true"
+                                    android:paddingLeft="10dp"
+                                    android:text=""
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:textStyle="bold"
+                                    android:layout_below="@id/pending_count"
+                                    android:id="@+id/pending_request"
+                                    android:textColor="@android:color/holo_red_dark"
+                                    android:textSize="15sp" />
 
                                 <ImageView
                                     android:layout_width="wrap_content"
@@ -601,7 +624,7 @@
                                         android:layout_alignParentStart="true"
                                         android:layout_alignParentBottom="true"
                                         android:padding="10dp"
-                                        android:text="40"
+                                        android:text=""
 
                                         android:textStyle="bold"
                                         android:id="@+id/total_user"
@@ -613,7 +636,7 @@
                                         android:layout_alignParentStart="true"
                                         android:layout_alignParentBottom="true"
                                         android:paddingLeft="10dp"
-                                        android:text="40"
+                                        android:text=""
                                         android:textStyle="bold"
                                         android:id="@+id/total_wallet"
                                         android:textColor="@android:color/holo_blue_light"
@@ -655,7 +678,29 @@
                                 android:layout_height="match_parent"
                                 android:background="#FBE9E7"
                                 android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentStart="true"
+                                    android:paddingLeft="10dp"
+                                    android:text=""
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:textStyle="bold"
+                                    android:id="@+id/wallet_count"
+                                    android:textColor="@android:color/holo_red_dark"
+                                    android:textSize="15sp" />
 
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingLeft="10dp"
+                                    android:layout_below="@id/wallet_count"
+                                    android:text=""
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:textStyle="bold"
+                                    android:id="@+id/wallet_request"
+                                    android:textColor="@android:color/holo_red_dark"
+                                    android:textSize="15sp" />
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -684,10 +729,11 @@
                             android:layout_height="120dp"
                             android:layout_weight="1"
                             app:cardCornerRadius="12dp"
+                            android:id="@+id/contact_us_btn"
                             app:cardUseCompatPadding="true">
 
                             <RelativeLayout
-                                android:id="@+id/contact_us_btn"
+
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="#CBC3E3"
@@ -699,7 +745,7 @@
                                     android:layout_alignParentTop="true"
                                     android:layout_alignParentEnd="true"
                                     android:padding="10dp"
-                                    android:src="@drawable/ic_phone"
+                                    android:src="@drawable/ic_marquee"
                                     app:tint="@android:color/holo_purple" />
 
                                 <TextView
@@ -708,7 +754,7 @@
                                     android:layout_alignParentStart="true"
                                     android:layout_alignParentBottom="true"
                                     android:padding="10dp"
-                                    android:text="Contact Us"
+                                    android:text="Ledger Report"
                                     android:textColor="@android:color/holo_purple"
                                     android:textSize="15sp" />
 

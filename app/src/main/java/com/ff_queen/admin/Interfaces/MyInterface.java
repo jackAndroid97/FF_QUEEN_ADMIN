@@ -42,6 +42,14 @@ public interface MyInterface {
     Call<String> login(@Field("email") String email, @Field("password") String password);
 
     @FormUrlEncoded
+    @POST("ledger_reports.php")
+    Call<String> ledger_reports(@Field("date") String date);
+
+    @GET("fetch_category.php")
+    Call<String> fetch_categories();
+
+
+    @FormUrlEncoded
     @POST("change_status.php")
     Call<String> change_status(@Field("status") String status, @Field("id") String id);
 
@@ -338,6 +346,10 @@ public interface MyInterface {
     @FormUrlEncoded
     @POST("passbook.php")
     Call<String> fetch_transaction_history(@Field("user_id") String user_id);
+
+    @FormUrlEncoded
+    @POST("fetch_betting_history.php")
+    Call<String> fetch_bid_history(@Field("game_id") String game_id,@Field("category") String category,@Field("date") String date);
 
 
     @POST("circle_fetch_admin.php")

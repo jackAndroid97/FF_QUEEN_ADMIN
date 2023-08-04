@@ -107,7 +107,8 @@ public class SuperDistributorWithdrawActivity extends AppCompatActivity {
                                         jsonObject.getString("account_no"),
                                         jsonObject.getString("ifsc_code"),
                                         jsonObject.getString("mobile"),
-                                        jsonObject.getString("wallet")
+                                        jsonObject.getString("wallet"),
+                                        jsonObject.getString("time")
                                 ));
                             }
                             adapter = new WithdrawAllRequestAdapter(SuperDistributorWithdrawActivity.this,withdraw_request_models, type);

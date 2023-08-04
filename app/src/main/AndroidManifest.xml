@@ -30,6 +30,18 @@
             android:exported="false"
             android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
         <activity
+            android:name=".Activities.LedgerReportActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.BidHistoryActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.SelectGames"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
             android:name=".Activities.AddGameActivity"
             android:exported="false"
             android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />

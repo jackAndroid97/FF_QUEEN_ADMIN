@@ -102,7 +102,8 @@ public class MoneyRequestActivity extends AppCompatActivity {
                                         jsonObject.getString("account_no"),
                                         jsonObject.getString("ifsc_code"),
                                         jsonObject.getString("mobile"),
-                                        jsonObject.getString("wallet")
+                                        jsonObject.getString("wallet"),
+                                        jsonObject.getString("time")
                                 ));
                             }
                             adapter = new MoneyRequestAdapter(MoneyRequestActivity.this,request_models);

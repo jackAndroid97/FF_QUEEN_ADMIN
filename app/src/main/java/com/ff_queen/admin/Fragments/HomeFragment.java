@@ -24,6 +24,7 @@ import com.ff_queen.admin.Activities.CircleActivity;
 import com.ff_queen.admin.Activities.GameActivity;
 import com.ff_queen.admin.Activities.GameOffActivity;
 import com.ff_queen.admin.Activities.KoyelActivity;
+import com.ff_queen.admin.Activities.LedgerReportActivity;
 import com.ff_queen.admin.Activities.Login_Activity;
 import com.ff_queen.admin.Activities.MainActivity;
 import com.ff_queen.admin.Activities.MarqueeActivity;
@@ -64,9 +65,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private ImageView lucky_seven_image;
     private TextView spin_name;
     private ImageView spin_image;
-    private TextView circle_name;
+    private TextView circle_name,pending_count,wallet_count;
     private ImageView circle_image;
-    private TextView thunder_bolt_name,total_user,total_wallet;
+    private TextView thunder_bolt_name,total_user,total_wallet,pending_request,wallet_request;
     private ImageView thunder_bolt_image;
     private String fatafat_game_id;
     private String spin_game_id;
@@ -83,7 +84,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private CardView money_request_btn;
     private CardView withdraw_btn;
     private CardView commission_btn;
-    private CardView game_off_btn,Game_time;
+    private CardView game_off_btn,Game_time,contact_us_btn;
     private String fatafat_image_url;
     private String lucky_seven_image_url, circle_image_url, spin_image_url;
     private String thunder_image_url;
@@ -104,6 +105,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         userBtn = view.findViewById(R.id.user_btn);
         total_user = view.findViewById(R.id.total_user);
         total_wallet = view.findViewById(R.id.total_wallet);
+        pending_request = view.findViewById(R.id.pending_request);
+        wallet_request = view.findViewById(R.id.wallet_request);
+        pending_count = view.findViewById(R.id.pending_count);
+        wallet_count = view.findViewById(R.id.wallet_count);
+        contact_us_btn = view.findViewById(R.id.contact_us_btn);
 
         myInterface = ApiClient.getApiClient().create(MyInterface.class);
 
@@ -160,6 +166,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             public void onClick(View view) {
 
                 startActivity(new Intent(getActivity(), AddSuperDistributorActivity.class));
+                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+        });
+        contact_us_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(getActivity(), LedgerReportActivity.class));
                 getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
@@ -371,11 +385,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         if (jsonObject.getString("rec").equals("0")) {
                             total_user.setText("0 Users");
                             total_wallet.setText("₹0");
+                            pending_request.setText("₹0");
+                            wallet_request.setText("₹0");
+                            pending_count.setText("0 Request");
+                            wallet_count.setText("0 Request");
                            // Toast.makeText(getActivity(), "Admin not found", Toast.LENGTH_SHORT).show();
                             ProgressUtils.cancelLoading();
                         } else {
                             total_user.setText(jsonObject.getString("total_user_count")+" Users");
                             total_wallet.setText("₹"+jsonObject.getString("total_user_wallet"));
+                            pending_request.setText("₹"+jsonObject.getString("total_pending_add"));
+                            wallet_request.setText("₹"+jsonObject.getString("total_withdraw_amount"));
+                            pending_count.setText(jsonObject.getString("total_pending_add_count")+" Request");
+                            wallet_count.setText(jsonObject.getString("total_withdraw_amount_count")+" Request");
                             ProgressUtils.cancelLoading();
                         }
                     } catch (JSONException e) {
