@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ff_queen.admin.Interfaces.MyInterface;
+import com.ff_queen.admin.Models.BidHistoryModel;
 import com.ff_queen.admin.Models.PassBookModel;
 import com.ff_queen.admin.R;
 import com.ff_queen.admin.Utilities.ApiClient;
@@ -48,9 +49,9 @@ public class BidHistoryActivity extends AppCompatActivity {
     private final int MY_PERMISSIONS_REQUEST_USE_CAMERA = 0x00AF;
     int start_month, start_year, start_day;
     private String start_date = "";
-    List<PassBookModel> payment_models = new ArrayList<>();
+    List<BidHistoryModel> payment_models = new ArrayList<>();
     String date="";
-    String game_id,game_name,cat_id;
+    String game_id,digit,cat_id;
     Transaction_Adapter adapter;
     RecyclerView rv_passbook;
     @Override
@@ -64,22 +65,23 @@ public class BidHistoryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         game_id=getIntent().getExtras().getString("game_id");
-        game_name=getIntent().getExtras().getString("game_name");
+        digit=getIntent().getExtras().getString("digit");
         cat_id=getIntent().getExtras().getString("cat_id");
+        date=getIntent().getExtras().getString("date");
 
         rv_passbook = findViewById(R.id.rv_transaction);
         rv_passbook.setHasFixedSize(true);
         rv_passbook.setLayoutManager(new LinearLayoutManager(BidHistoryActivity.this,LinearLayoutManager.VERTICAL,false));
-        date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+       // date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         fetch_transaction_history();
     }
 
     public class Transaction_Adapter extends RecyclerView.Adapter<Transaction_Adapter.MyViewHolder> {
 
         Context context;
-        List<PassBookModel> models;
+        List<BidHistoryModel> models;
 
-        public Transaction_Adapter(Context context, List<PassBookModel> models) {
+        public Transaction_Adapter(Context context, List<BidHistoryModel> models) {
             this.context = context;
             this.models = models;
         }
@@ -88,7 +90,7 @@ public class BidHistoryActivity extends AppCompatActivity {
         @Override
         public Transaction_Adapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(context);
-            View view = inflater.inflate(R.layout.single_transaction, parent, false);
+            View view = inflater.inflate(R.layout.single_bid_history, parent, false);
             return new Transaction_Adapter.MyViewHolder(view);
         }
 
@@ -96,11 +98,12 @@ public class BidHistoryActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull Transaction_Adapter.MyViewHolder holder, int position) {
 
 
-            holder.date.setText(models.get(position).getDate()+"\n"+models.get(position).getTime());
-            holder.desc.setText(models.get(position).getDesc());
-            holder.p_amount.setText("₹"+models.get(position).getPre_bal());
-            holder.txt_amount.setText("₹"+models.get(position).getAmt());
-            holder.txt_balance.setText("₹"+models.get(position).getAv_bal());
+            holder.txt_date.setText(models.get(position).getDate()+"\n"+models.get(position).getTime());
+            holder.txt_g_name.setText(models.get(position).getGame_name());
+            holder.txt_name.setText(models.get(position).getName());
+            holder.txt_digit.setText(models.get(position).getAmt());
+            holder.category.setText(models.get(position).getCategory());
+            holder.txt_amt.setText("₹"+models.get(position).getAmt());
 
 
 
@@ -113,22 +116,23 @@ public class BidHistoryActivity extends AppCompatActivity {
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView desc, date, txt_amount,time,p_amount,txt_balance;
+            TextView txt_amt, txt_date, txt_digit,category,txt_g_name,txt_name;
 
             public MyViewHolder(@NonNull View itemView) {
                 super(itemView);
 
-                txt_balance = itemView.findViewById(R.id.txt_balance);
-                date = itemView.findViewById(R.id.txt_date);
-                txt_amount = itemView.findViewById(R.id.txt_amount);
-                desc = itemView.findViewById(R.id.desc);
-                p_amount = itemView.findViewById(R.id.p_amount);
+                txt_name = itemView.findViewById(R.id.txt_name);
+                txt_g_name = itemView.findViewById(R.id.txt_g_name);
+                category = itemView.findViewById(R.id.category);
+                txt_digit = itemView.findViewById(R.id.txt_digit);
+                txt_amt = itemView.findViewById(R.id.txt_amt);
+                txt_date = itemView.findViewById(R.id.txt_date);
             }
         }
     }
 
     private void fetch_transaction_history() {
-        Call<String> call = myInterface.fetch_bid_history(game_id,cat_id,date);
+        Call<String> call = myInterface.betting_details_history(game_id,cat_id,date,digit);
         ProgressUtils.showLoadingDialog(BidHistoryActivity.this);
         call.enqueue(new Callback<String>() {
             @Override
@@ -147,12 +151,14 @@ public class BidHistoryActivity extends AppCompatActivity {
                             payment_models.clear();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                payment_models.add(new PassBookModel(jsonObject.getString("date"),
+                                payment_models.add(new BidHistoryModel(
+                                        jsonObject.getString("date"),
                                         jsonObject.getString("time"),
-                                        jsonObject.getString("money_status"),
-                                        jsonObject.getString("previous_amount"),
-                                        jsonObject.getString("new_amount"),
-                                        jsonObject.getString("ammount")
+                                        jsonObject.getString("game_name"),
+                                        jsonObject.getString("digit"),
+                                        jsonObject.getString("rupees"),
+                                        jsonObject.getString("user_name"),
+                                        jsonObject.getString("category")
 
                                 ));
                             }

@@ -153,6 +153,7 @@ public class LedgerReportActivity extends AppCompatActivity {
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        ProgressUtils.cancelLoading();
                     }
                 }
             }
@@ -160,6 +161,7 @@ public class LedgerReportActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 Toast.makeText(LedgerReportActivity.this, "Something went wrong.", Toast.LENGTH_SHORT).show();
+                ProgressUtils.cancelLoading();
             }
         });
     }

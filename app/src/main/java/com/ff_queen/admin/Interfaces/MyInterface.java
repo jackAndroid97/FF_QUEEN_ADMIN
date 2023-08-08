@@ -351,6 +351,14 @@ public interface MyInterface {
     @POST("fetch_betting_history.php")
     Call<String> fetch_bid_history(@Field("game_id") String game_id,@Field("category") String category,@Field("date") String date);
 
+    @FormUrlEncoded
+    @POST("betting_details_history.php")
+    Call<String> betting_details_history(@Field("game_id") String game_id,@Field("category") String category,@Field("date") String date,@Field("no_digit") String no_digit);
+
+
+    @FormUrlEncoded
+    @POST("betting_history_no_wise.php")
+    Call<String> fetch_bid_history_number(@Field("game_id") String game_id,@Field("category") String category,@Field("date") String date,@Field("no_digit") String no_digit);
 
     @POST("circle_fetch_admin.php")
     Call<String> circle_csv(@Body JsonObject body);

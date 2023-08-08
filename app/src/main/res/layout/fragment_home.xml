@@ -397,6 +397,7 @@
                                     android:layout_alignParentTop="true"
                                     android:layout_alignParentEnd="true"
                                     android:padding="10dp"
+                                    android:visibility="invisible"
                                     android:src="@drawable/ic_marquee"
                                     app:tint="@android:color/holo_green_light" />
 
@@ -435,6 +436,7 @@
                                     android:layout_alignParentTop="true"
                                     android:layout_alignParentEnd="true"
                                     android:padding="10dp"
+                                    android:visibility="invisible"
                                     android:src="@drawable/ic_banner"
                                     app:tint="@android:color/holo_blue_light" />
 
@@ -533,6 +535,7 @@
                                     android:layout_alignParentTop="true"
                                     android:layout_alignParentEnd="true"
                                     android:padding="10dp"
+                                    android:visibility="invisible"
                                     android:src="@drawable/money_transfer"
                                     app:tint="#747E05" />
 
@@ -648,6 +651,7 @@
                                     android:layout_alignParentTop="true"
                                     android:layout_alignParentEnd="true"
                                     android:padding="10dp"
+                                    android:visibility="invisible"
                                     android:src="@drawable/ic_user"
                                     app:tint="@android:color/holo_red_dark" />
 
@@ -707,6 +711,7 @@
                                     android:layout_alignParentTop="true"
                                     android:layout_alignParentEnd="true"
                                     android:padding="10dp"
+                                    android:visibility="invisible"
                                     android:src="@drawable/money"
                                     app:tint="#F17062" />
 
@@ -745,6 +750,7 @@
                                     android:layout_alignParentTop="true"
                                     android:layout_alignParentEnd="true"
                                     android:padding="10dp"
+                                    android:visibility="invisible"
                                     android:src="@drawable/ic_marquee"
                                     app:tint="@android:color/holo_purple" />
 
