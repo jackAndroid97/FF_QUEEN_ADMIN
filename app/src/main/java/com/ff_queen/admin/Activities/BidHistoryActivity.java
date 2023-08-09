@@ -104,6 +104,7 @@ public class BidHistoryActivity extends AppCompatActivity {
             holder.txt_digit.setText(models.get(position).getAmt());
             holder.category.setText(models.get(position).getCategory());
             holder.txt_amt.setText("₹"+models.get(position).getAmt());
+            holder.baji.setText(models.get(position).getBaji());
 
 
 
@@ -116,7 +117,7 @@ public class BidHistoryActivity extends AppCompatActivity {
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView txt_amt, txt_date, txt_digit,category,txt_g_name,txt_name;
+            TextView txt_amt, txt_date, txt_digit,category,txt_g_name,txt_name,baji;
 
             public MyViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -127,6 +128,7 @@ public class BidHistoryActivity extends AppCompatActivity {
                 txt_digit = itemView.findViewById(R.id.txt_digit);
                 txt_amt = itemView.findViewById(R.id.txt_amt);
                 txt_date = itemView.findViewById(R.id.txt_date);
+                baji = itemView.findViewById(R.id.baji);
             }
         }
     }
@@ -158,7 +160,8 @@ public class BidHistoryActivity extends AppCompatActivity {
                                         jsonObject.getString("digit"),
                                         jsonObject.getString("rupees"),
                                         jsonObject.getString("user_name"),
-                                        jsonObject.getString("category")
+                                        jsonObject.getString("category"),
+                                        jsonObject.getString("baji")
 
                                 ));
                             }

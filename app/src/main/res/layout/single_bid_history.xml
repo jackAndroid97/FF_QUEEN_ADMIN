@@ -54,10 +54,24 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:textColor="@color/white"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/_5sdp"
+            android:text="Amt"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:id="@+id/baji"
+            android:background="@drawable/box_text"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="0.6"
             android:textColor="@color/white"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/_10sdp"
+            android:paddingLeft="@dimen/_5sdp"
             android:text="Amt"
             android:textSize="10sp"
             android:textStyle="bold"

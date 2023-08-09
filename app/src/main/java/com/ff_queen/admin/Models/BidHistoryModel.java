@@ -1,9 +1,10 @@
 package com.ff_queen.admin.Models;
 
 public class BidHistoryModel {
-    String date,time,game_name,digit,amt,name,category;
+    String date,time,game_name,digit,amt,name,category,baji;
 
-    public BidHistoryModel(String date, String time, String game_name, String digit, String amt, String name, String category) {
+    public BidHistoryModel(String date, String time, String game_name, String digit, String amt, String name,
+                           String category,String baji) {
         this.date = date;
         this.time = time;
         this.game_name = game_name;
@@ -11,6 +12,7 @@ public class BidHistoryModel {
         this.amt = amt;
         this.name = name;
         this.category = category;
+        this.baji = baji;
     }
 
     public String getDate() {
@@ -67,5 +69,13 @@ public class BidHistoryModel {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getBaji() {
+        return baji;
+    }
+
+    public void setBaji(String baji) {
+        this.baji = baji;
     }
 }
