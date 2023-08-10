@@ -442,7 +442,9 @@ public class AddOtherResult extends AppCompatActivity {
                                         jsonObject.getString("start_time"),
                                         jsonObject.getString("end_time"),
                                         jsonObject.getString("count"),
-                                        jsonObject.getString("date_status")
+                                        jsonObject.getString("date_status"),
+                                       "",
+                                        ""
                                 ));
                                 ArrayAdapter<Timing_Model> adapter = new ArrayAdapter<Timing_Model>(AddOtherResult.this,
                                         android.R.layout.simple_dropdown_item_1line, timing_model_list);

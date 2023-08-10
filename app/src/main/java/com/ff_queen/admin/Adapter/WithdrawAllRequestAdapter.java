@@ -78,6 +78,7 @@ public class WithdrawAllRequestAdapter extends RecyclerView.Adapter<WithdrawAllR
         holder.binding.amount.setText("₹ "+model.getAmount());
         holder.binding.date.setText(formatDate);
         holder.binding.time.setText(model.getTime());
+        holder.binding.tId.setText("UPI Id: "+model.getUpi_id());
 
         holder.binding.bankDetails.setText("Bank Name: "+ model.getBank_name()+"\n"+"Account No: "+model.getAc_no()
         +"\n"+"IFSC Code: "+model.getIfsc());

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import com.ff_queen.admin.Interfaces.MyInterface;
 import com.ff_queen.admin.Models.Timing_Model;
 import com.ff_queen.admin.R;
 import com.ff_queen.admin.Utilities.ApiClient;
+import com.ff_queen.admin.Utilities.ProgressUtils;
 import com.ff_queen.admin.databinding.ActivityGameTimingsBinding;
 import com.ff_queen.admin.databinding.ActivityResultBinding;
 
@@ -144,7 +146,9 @@ public class GameTimingsActivity extends AppCompatActivity {
                                         jsonObject.getString("start_time"),
                                         jsonObject.getString("end_time"),
                                         jsonObject.getString("count"),
-                                        jsonObject.getString("date_status")
+                                        jsonObject.getString("date_status"),
+                                        jsonObject.getString("game_status"),
+                                        jsonObject.getString("time_id")
                                 ));
 
                                 adapter.notifyDataSetChanged();
@@ -192,12 +196,20 @@ public class GameTimingsActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull GameTimeViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull GameTimeViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
             Glide.with(context).load(game_image).into(holder.imageView);
             holder.startTime.setText(list.get(position).start_time+" - ");
             holder.endTime.setText(list.get(position).end_time);
             holder.baji.setText("Baji: " +list.get(position).baji);
+
+            if(list.get(position).getA_status().equals("Y")){
+                holder.active.setVisibility(View.GONE);
+                holder.deactive.setVisibility(View.VISIBLE);
+            }else{
+                holder.active.setVisibility(View.VISIBLE);
+                holder.deactive.setVisibility(View.GONE);
+            }
 
             if(game_image.equals("")){
                 Glide.with(context)
@@ -209,6 +221,88 @@ public class GameTimingsActivity extends AppCompatActivity {
                         .into(holder.imageView);
             }
 
+            holder.active.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Call<String> call = myInterface.game_timing_status("Y",game_id,list.get(position).getTime_id());
+                    ProgressUtils.showLoadingDialog(context);
+                    call.enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            String res = response.body();
+                            if (res == null){
+                                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                                ProgressUtils.cancelLoading();
+                            }
+                            else {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(res);
+                                    if (jsonObject.getString("rec").equals("0")) {
+                                        Toast.makeText(context, "status not change", Toast.LENGTH_SHORT).show();
+                                        ProgressUtils.cancelLoading();
+                                    } else {
+
+                                        holder.active.setVisibility(View.GONE);
+                                        holder.deactive.setVisibility(View.VISIBLE);
+                                        ProgressUtils.cancelLoading();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    ProgressUtils.cancelLoading();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                            Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show();
+                            ProgressUtils.cancelLoading();
+                        }
+                    });
+                }
+            });
+            holder.deactive.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Call<String> call = myInterface.game_timing_status("N",game_id,list.get(position).getTime_id());
+                    ProgressUtils.showLoadingDialog(context);
+                    call.enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            String res = response.body();
+                            if (res == null){
+                                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                                ProgressUtils.cancelLoading();
+                            }
+                            else {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(res);
+                                    if (jsonObject.getString("rec").equals("0")) {
+                                        Toast.makeText(context, "status not change", Toast.LENGTH_SHORT).show();
+                                        ProgressUtils.cancelLoading();
+                                    } else {
+
+                                        holder.active.setVisibility(View.VISIBLE);
+                                        holder.deactive.setVisibility(View.GONE);
+                                        ProgressUtils.cancelLoading();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    ProgressUtils.cancelLoading();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                            Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show();
+                            ProgressUtils.cancelLoading();
+                        }
+                    });
+                }
+            });
 
         }
 
@@ -220,7 +314,7 @@ public class GameTimingsActivity extends AppCompatActivity {
         public class GameTimeViewHolder extends RecyclerView.ViewHolder {
 
             private ImageView imageView;
-            private TextView baji,baji_text,baji_text_2, startTime, endTime;
+            private TextView baji,baji_text,baji_text_2, startTime, endTime,active,deactive;
             private LinearLayout lin_start_time;
 
             public GameTimeViewHolder(@NonNull View itemView) {
@@ -230,6 +324,8 @@ public class GameTimingsActivity extends AppCompatActivity {
                 startTime = itemView.findViewById(R.id.start_time);
                 endTime = itemView.findViewById(R.id.end_time);
                 baji = itemView.findViewById(R.id.baji);
+                active = itemView.findViewById(R.id.active);
+                deactive = itemView.findViewById(R.id.deactive);
              //   baji_text = itemView.findViewById(R.id.baji_text);
                // baji_text_2 = itemView.findViewById(R.id.baji_text_2);
               //  lin_start_time = itemView.findViewById(R.id.lin_start_time);

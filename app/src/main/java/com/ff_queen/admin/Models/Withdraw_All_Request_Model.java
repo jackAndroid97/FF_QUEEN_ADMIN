@@ -7,11 +7,11 @@ public class Withdraw_All_Request_Model {
     String name;
     String amount;
     String date;
-    String bank_name,ac_no,ifsc,mobile,balance,time;
+    String bank_name,ac_no,ifsc,mobile,balance,time,upi_id;
 
 
     public Withdraw_All_Request_Model(String id, String user_id, String name, String amount, String date,
-                                      String bank_name,String ac_no,String ifsc,String mobile,String balance,String time) {
+                                      String bank_name,String ac_no,String ifsc,String mobile,String balance,String time,String upi_id) {
         this.id = id;
         this.user_id = user_id;
         this.name = name;
@@ -23,6 +23,7 @@ public class Withdraw_All_Request_Model {
         this.mobile = mobile;
         this.balance = balance;
         this.time = time;
+        this.upi_id = upi_id;
 
 
     }
@@ -69,5 +70,9 @@ public class Withdraw_All_Request_Model {
 
     public String getTime() {
         return time;
+    }
+
+    public String getUpi_id() {
+        return upi_id;
     }
 }

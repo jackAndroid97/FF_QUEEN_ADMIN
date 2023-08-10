@@ -8,9 +8,9 @@ public class Money_Request_Model {
     String amount;
     String date;
    // String type;
-    String bank_name,account_no,ifsc_code,mobile,wallet,time;
+    String bank_name,account_no,ifsc_code,mobile,wallet,time,t_id;
 
-    public Money_Request_Model(String id, String user_id, String name, String amount, String date, String bank_name, String account_no, String ifsc_code, String mobile, String wallet,String time) {
+    public Money_Request_Model(String id, String user_id, String name, String amount, String date, String bank_name, String account_no, String ifsc_code, String mobile, String wallet,String time,String t_id) {
         this.id = id;
         this.user_id = user_id;
         this.name = name;
@@ -22,6 +22,7 @@ public class Money_Request_Model {
         this.mobile = mobile;
         this.wallet = wallet;
         this.time = time;
+        this.t_id = t_id;
     }
 
     public String getId() {
@@ -66,5 +67,9 @@ public class Money_Request_Model {
 
     public String getTime() {
         return time;
+    }
+
+    public String getT_id() {
+        return t_id;
     }
 }

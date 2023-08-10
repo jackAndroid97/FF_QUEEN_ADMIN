@@ -77,6 +77,7 @@ public class MoneyRequestAdapter extends RecyclerView.Adapter<MoneyRequestAdapte
         holder.binding.amount.setText("₹ "+model.getAmount());
         holder.binding.date.setText(formatDate);
         holder.binding.time.setText(model.getTime());
+        holder.binding.tId.setText("Transaction Id: "+model.getT_id());
 
         holder.binding.bankDetails.setText("Bank Name: "+ model.getBank_name()+"\n"+"Account No: "+model.getAccount_no()
                 +"\n"+"IFSC Code: "+model.getIfsc_code());

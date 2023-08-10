@@ -243,7 +243,9 @@ public class AddResultKoyelActivity extends AppCompatActivity {
                                         jsonObject.getString("game_time"),
                                         "",
                                         jsonObject.getString("count"),
-                                        jsonObject.getString("date_status")
+                                        jsonObject.getString("date_status"),
+                                        "",
+                                       ""
                                 ));
                                 ArrayAdapter<Timing_Model> adapter = new ArrayAdapter<Timing_Model>(AddResultKoyelActivity.this,
                                         android.R.layout.simple_dropdown_item_1line, timing_model_list);

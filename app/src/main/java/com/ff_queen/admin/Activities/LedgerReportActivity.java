@@ -31,7 +31,10 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,6 +48,7 @@ public class LedgerReportActivity extends AppCompatActivity {
     private final int MY_PERMISSIONS_REQUEST_USE_CAMERA = 0x00AF;
     int start_month, start_year, start_day;
     private String start_date = "";
+    String date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,19 +59,26 @@ public class LedgerReportActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Ledger Report");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        binding.contentLedgerReport.textDate.setText(date);
         total_user("");
         binding.contentLedgerReport.aMoneyView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LedgerReportActivity.this,MoneyRequestActivity.class));
+                Bundle bundle=new Bundle();
+                bundle.putString("type","ledger");
+                bundle.putString("date",binding.contentLedgerReport.textDate.getText().toString());
+                startActivity(new Intent(LedgerReportActivity.this,MoneyRequestActivity.class).putExtras(bundle));
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
             }
         });
         binding.contentLedgerReport.wMoneyView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LedgerReportActivity.this,SuperDistributorWithdrawActivity.class));
+                Bundle bundle=new Bundle();
+                bundle.putString("type","ledger");
+                bundle.putString("date",binding.contentLedgerReport.textDate.getText().toString());
+                startActivity(new Intent(LedgerReportActivity.this,SuperDistributorWithdrawActivity.class).putExtras(bundle));
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
             }
         });

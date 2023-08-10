@@ -2,10 +2,10 @@ package com.ff_queen.admin.Models;
 
 public class Timing_Model {
 
-    public String id, time, start_time, end_time, status, baji,date_status, name;
+    public String id, time, start_time, end_time, status, baji,date_status, name,time_id,a_status;
     public String image;
 
-    public Timing_Model(String id, String time, String status,String start_time,String end_time, String baji, String date_status) {
+    public Timing_Model(String id, String time, String status,String start_time,String end_time, String baji, String date_status,String time_id,String a_status) {
         this.id = id;
         this.time = time;
         this.status = status;
@@ -13,6 +13,8 @@ public class Timing_Model {
         this.end_time = end_time;
         this.baji = baji;
         this.date_status = date_status;
+        this.time_id = time_id;
+        this.a_status = a_status;
     }
 
     public Timing_Model(String id, String name, String image) {
@@ -62,4 +64,13 @@ public class Timing_Model {
     public String getName() {
         return name;
     }
+
+    public String getTime_id() {
+        return time_id;
+    }
+
+    public String getA_status() {
+        return a_status;
+    }
 }
+

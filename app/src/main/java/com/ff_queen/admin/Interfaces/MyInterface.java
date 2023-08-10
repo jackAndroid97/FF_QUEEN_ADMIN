@@ -54,6 +54,10 @@ public interface MyInterface {
     Call<String> change_status(@Field("status") String status, @Field("id") String id);
 
     @FormUrlEncoded
+    @POST("game_timing_status.php")
+    Call<String> game_timing_status(@Field("status") String status, @Field("game_id") String game_id,@Field("time_id")String time_id);
+
+    @FormUrlEncoded
     @POST("add_game.php")
     Call<String> Add_Game(@Field("name") String name,@Field("b_name") String b_name,
                           @Field("img") String img);
@@ -65,7 +69,7 @@ public interface MyInterface {
 
     @FormUrlEncoded
     @POST("fatafat_game_timings.php")
-    Call<String> fatafat_game_timings(@Field("game_id") String game_id, @Field("page") String page, @Field("type") String type);
+        Call<String> fatafat_game_timings(@Field("game_id") String game_id, @Field("page") String page, @Field("type") String type);
     @FormUrlEncoded
     @POST("fetch_time.php")
     Call<String> fetch_time(@Field("game_id") String game_id);
@@ -231,7 +235,10 @@ public interface MyInterface {
     @POST("update_admin_profile.php")
     Call<String> update_admin_profile(@Field("user_id") String user_id,
                                      @Field("email") String email,
-                                     @Field("pass")String pass);
+                                     @Field("pass")String pass,
+                                     @Field("w_number")String wNum,
+                                     @Field("link")String link
+                                      );
 
 
     @FormUrlEncoded
@@ -302,10 +309,12 @@ public interface MyInterface {
     @POST("fetch_user.php")
     Call<List<View_User_Model>> fetch_user(@Field("ref_code") String ref_code);
 
-    @GET("fetch_money_request.php")
-    Call<String> fetch_money_request();
-
-
+    @FormUrlEncoded
+    @POST("fetch_money_request.php")
+    Call<String> fetch_money_request(@Field("number") String number,@Field("type") String type);
+    @FormUrlEncoded
+    @POST("fetch_money_request_two.php")
+    Call<String> fetch_money_request_two(@Field("date") String number);
 
     @FormUrlEncoded
     @POST("approved_request.php")
@@ -316,9 +325,13 @@ public interface MyInterface {
     Call<List<Withdraw_Request_Model>> fetch_user_withdraw_request();
 
 
-    @GET("fetch_withdraw_req.php")
-    Call<String> fetch_all_withdraw_req();
+    @FormUrlEncoded
+    @POST("fetch_withdraw_req.php")
+    Call<String> fetch_all_withdraw_req(@Field("number") String amount);
 
+    @FormUrlEncoded
+    @POST("fetch_withdraw_req_two.php")
+    Call<String> fetch_all_withdraw_req_two(@Field("date") String amount);
 
     @FormUrlEncoded
     @POST("withdraw_approved.php")

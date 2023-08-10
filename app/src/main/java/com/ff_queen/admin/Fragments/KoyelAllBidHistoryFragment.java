@@ -249,7 +249,9 @@ public class KoyelAllBidHistoryFragment extends Fragment {
                                         jsonObject.getString("game_time"),
                                         "",
                                         jsonObject.getString("count"),
-                                        jsonObject.getString("date_status")
+                                        jsonObject.getString("date_status"),
+                                        "",
+                                       ""
                                 ));
 
                             }

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -28,6 +29,7 @@ public class EditProfileFragment extends Fragment {
 
     private TextInputLayout email, password;
     private MyInterface myInterface;
+    EditText w_number,youtube_link;
     private User user;
     private Button btn_save;
 
@@ -43,6 +45,8 @@ public class EditProfileFragment extends Fragment {
         email = view.findViewById(R.id.email);
         password = view.findViewById(R.id.password);
         btn_save = view.findViewById(R.id.btn_save);
+        w_number = view.findViewById(R.id.w_number);
+        youtube_link = view.findViewById(R.id.youtube);
 
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +75,9 @@ public class EditProfileFragment extends Fragment {
 
     private void updateProfile()
     {
-        Call<String> call = myInterface.update_admin_profile(user.getUser_id(),email.getEditText().getText().toString(), password.getEditText().getText().toString());
+        Call<String> call = myInterface.update_admin_profile(user.getUser_id(),
+                email.getEditText().getText().toString(),
+                password.getEditText().getText().toString(),w_number.getText().toString(),youtube_link.getText().toString());
         ProgressUtils.showLoadingDialog(getContext());
         call.enqueue(new Callback<String>() {
             @Override
@@ -86,6 +92,8 @@ public class EditProfileFragment extends Fragment {
                         ProgressUtils.cancelLoading();
                         email.getEditText().setText("");
                         password.getEditText().setText("");
+                        w_number.setText("");
+                        youtube_link.setText("");
                     }
                     else
                     {

@@ -190,8 +190,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         money_request_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                startActivity(new Intent(getActivity(), MoneyRequestActivity.class));
+                Bundle bundle=new Bundle();
+                bundle.putString("type","request");
+                bundle.putString("date","");
+                startActivity(new Intent(getActivity(), MoneyRequestActivity.class).putExtras(bundle));
                 getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
@@ -200,8 +202,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         withdraw_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                startActivity(new Intent(getActivity(), SuperDistributorWithdrawActivity.class));
+                Bundle bundle=new Bundle();
+                bundle.putString("type","request");
+                bundle.putString("date","");
+                startActivity(new Intent(getActivity(), SuperDistributorWithdrawActivity.class).putExtras(bundle));
                 getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });

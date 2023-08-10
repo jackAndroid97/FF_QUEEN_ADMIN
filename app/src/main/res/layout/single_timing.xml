@@ -75,26 +75,43 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_25sdp"
-                android:background="@drawable/btn_back"
+
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:id="@+id/btnLin"
-                android:visibility="invisible"
+                android:visibility="visible"
+                android:orientation="horizontal"
                 android:layout_weight="0.5">
             <TextView
-                android:id="@+id/status"
+                android:id="@+id/active"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".4"
                 android:clickable="true"
-                android:foreground="@drawable/ripple_button"
+                android:background="@drawable/btn_back"
                 android:fontFamily="@font/fonts_medium"
                 android:gravity="center"
                 android:paddingHorizontal="@dimen/_5sdp"
-                android:text="Tap to Play"
+                android:text="Active"
                 android:textColor="@color/white"
+                android:visibility="gone"
                 android:textSize="11sp"
                 android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/deactive"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".4"
+                    android:clickable="true"
+                    android:background="@drawable/btn_back_off"
+                    android:fontFamily="@font/fonts_medium"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:text="Deactive"
+                    android:textColor="@color/white"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
