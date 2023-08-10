@@ -1,5 +1,6 @@
 package com.ff_queen.admin.Activities;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,14 +19,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ff_queen.admin.Interfaces.MyInterface;
-import com.ff_queen.admin.Models.BidHistoryModel;
-import com.ff_queen.admin.Models.PassBookModel;
+import com.ff_queen.admin.Models.Baji_Model;
+import com.ff_queen.admin.Models.BitNumberModel;
+import com.ff_queen.admin.Models.GamePlayDetailsModel;
 import com.ff_queen.admin.R;
 import com.ff_queen.admin.Utilities.ApiClient;
 import com.ff_queen.admin.Utilities.ProgressUtils;
 import com.ff_queen.admin.ViewModel.ApiResponse;
-import com.ff_queen.admin.databinding.ActivityBidHistoryBinding;
-import com.ff_queen.admin.databinding.ActivityLedgerReportBinding;
+import com.ff_queen.admin.databinding.ActivityBidHistoryNumberBinding;
+import com.ff_queen.admin.databinding.ActivityGamePlayDetailsBinding;
+import com.weiwangcn.betterspinner.library.BetterSpinner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,85 +45,73 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BidHistoryActivity extends AppCompatActivity {
+public class GamePlayDetailsActivity extends AppCompatActivity {
 
-    public static ActivityBidHistoryBinding binding;
+    public static ActivityGamePlayDetailsBinding binding;
     private ApiResponse apiResponse;
     private MyInterface myInterface;
+    private BetterSpinner slotSpinner;
     private final int MY_PERMISSIONS_REQUEST_USE_CAMERA = 0x00AF;
     int start_month, start_year, start_day;
     private String start_date = "";
-    List<BidHistoryModel> payment_models = new ArrayList<>();
-    String date="";
-    String game_id,digit,cat_id,baji;
+    List<GamePlayDetailsModel> payment_models = new ArrayList<>();
+    String date="",b_id="1";
+    String user_id;
     Transaction_Adapter adapter;
     RecyclerView rv_passbook;
+    private String[] sample = {"NO DATA"};
+    private List<Baji_Model> baji_models = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityBidHistoryBinding.inflate(getLayoutInflater());
+        binding = ActivityGamePlayDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
         myInterface = ApiClient.getApiClient().create(MyInterface.class);
-        getSupportActionBar().setTitle("Bid History");
+        getSupportActionBar().setTitle("Game Play Details");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        game_id=getIntent().getExtras().getString("game_id");
-        digit=getIntent().getExtras().getString("digit");
-        cat_id=getIntent().getExtras().getString("cat_id");
         date=getIntent().getExtras().getString("date");
-        baji=getIntent().getExtras().getString("baji");
+        user_id=getIntent().getExtras().getString("user_id");
+
 
         rv_passbook = findViewById(R.id.rv_transaction);
         rv_passbook.setHasFixedSize(true);
-        rv_passbook.setLayoutManager(new LinearLayoutManager(BidHistoryActivity.this,LinearLayoutManager.VERTICAL,false));
-       // date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        fetch_transaction_history("");
+        rv_passbook.setLayoutManager(new LinearLayoutManager(GamePlayDetailsActivity.this,LinearLayoutManager.VERTICAL,false));
 
 
-        binding.contentBidHistory.buttonSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name=binding.contentBidHistory.name.getText().toString();
-                if(name.equals("")){
-                    binding.contentBidHistory.name.setError("Enter mobile number");
-                }else{
-                    fetch_transaction_history(name);
-                }
-            }
-        });
+        fetch_transaction_history();
+
     }
 
     public class Transaction_Adapter extends RecyclerView.Adapter<Transaction_Adapter.MyViewHolder> {
 
         Context context;
-        List<BidHistoryModel> models;
+        List<GamePlayDetailsModel> models;
 
-        public Transaction_Adapter(Context context, List<BidHistoryModel> models) {
+        public Transaction_Adapter(Context context, List<GamePlayDetailsModel> models) {
             this.context = context;
             this.models = models;
         }
 
         @NonNull
         @Override
-        public Transaction_Adapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(context);
-            View view = inflater.inflate(R.layout.single_bid_history, parent, false);
-            return new Transaction_Adapter.MyViewHolder(view);
+            View view = inflater.inflate(R.layout.single_game_details, parent, false);
+            return new MyViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull Transaction_Adapter.MyViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
 
-            holder.txt_date.setText(models.get(position).getDate()+" "+models.get(position).getTime());
-            holder.txt_g_name.setText("Game Name: "+models.get(position).getGame_name());
-            holder.txt_name.setText("Name: "+models.get(position).getName());
-            holder.txt_digit.setText("Digit: "+models.get(position).getDigit());
-            holder.category.setText("Category: "+models.get(position).getCategory());
-            holder.txt_amt.setText("Amount: ₹"+models.get(position).getAmt());
+            holder.txt_g_name.setText(models.get(position).getGame_name());
+            holder.category.setText(models.get(position).getCategory());
             holder.baji.setText("Baji: "+models.get(position).getBaji());
-            holder.txt_mobile.setText("Mobile Number: "+models.get(position).getMobile());
+            holder.digit.setText(models.get(position).getDigit());
+            holder.txt_amount.setText("₹"+models.get(position).getAmount());
+
 
 
 
@@ -132,26 +124,24 @@ public class BidHistoryActivity extends AppCompatActivity {
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView txt_amt, txt_date, txt_digit,category,txt_g_name,txt_name,baji,txt_mobile;
+            TextView txt_g_name, category, baji,digit,txt_amount;
 
             public MyViewHolder(@NonNull View itemView) {
                 super(itemView);
 
-                txt_name = itemView.findViewById(R.id.txt_name);
                 txt_g_name = itemView.findViewById(R.id.txt_g_name);
                 category = itemView.findViewById(R.id.category);
-                txt_digit = itemView.findViewById(R.id.txt_digit);
-                txt_amt = itemView.findViewById(R.id.txt_amt);
-                txt_date = itemView.findViewById(R.id.txt_date);
                 baji = itemView.findViewById(R.id.baji);
-                txt_mobile = itemView.findViewById(R.id.txt_mobile);
+                digit = itemView.findViewById(R.id.digit);
+                txt_amount = itemView.findViewById(R.id.txt_amount);
+
             }
         }
     }
 
-    private void fetch_transaction_history(String number) {
-        Call<String> call = myInterface.betting_details_history(game_id,cat_id,date,digit,number,baji);
-        ProgressUtils.showLoadingDialog(BidHistoryActivity.this);
+    private void fetch_transaction_history() {
+        Call<String> call = myInterface.fetch_total_gameplay_details(date,user_id);
+        ProgressUtils.showLoadingDialog(GamePlayDetailsActivity.this);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -169,20 +159,18 @@ public class BidHistoryActivity extends AppCompatActivity {
                             payment_models.clear();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                payment_models.add(new BidHistoryModel(
-                                        jsonObject.getString("date"),
-                                        jsonObject.getString("time"),
+                                payment_models.add(new GamePlayDetailsModel(
+
                                         jsonObject.getString("game_name"),
-                                        jsonObject.getString("digit"),
-                                        jsonObject.getString("rupees"),
-                                        jsonObject.getString("user_name"),
                                         jsonObject.getString("category"),
                                         jsonObject.getString("baji"),
-                                        jsonObject.getString("mobile")
+                                        jsonObject.getString("digit"),
+                                        jsonObject.getString("rupees")
+
 
                                 ));
                             }
-                            adapter = new Transaction_Adapter(BidHistoryActivity.this,payment_models);
+                            adapter = new Transaction_Adapter(GamePlayDetailsActivity.this,payment_models);
                             rv_passbook.setAdapter(adapter);
                             ProgressUtils.cancelLoading();
 
@@ -191,10 +179,10 @@ public class BidHistoryActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                         ProgressUtils.cancelLoading();
-                        Toast.makeText(BidHistoryActivity.this, ""+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GamePlayDetailsActivity.this, ""+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }else{
-                    Toast.makeText(BidHistoryActivity.this, "No Response", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GamePlayDetailsActivity.this, "No Response", Toast.LENGTH_SHORT).show();
                     ProgressUtils.cancelLoading();
                 }
 
@@ -203,7 +191,7 @@ public class BidHistoryActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 ProgressUtils.cancelLoading();
-                Toast.makeText(BidHistoryActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(GamePlayDetailsActivity.this, "Error", Toast.LENGTH_SHORT).show();
             }
         });
     }

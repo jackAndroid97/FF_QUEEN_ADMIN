@@ -89,6 +89,15 @@ public class LedgerReportActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
             }
         });
+        binding.contentLedgerReport.gPlayView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle=new Bundle();
+                bundle.putString("date",binding.contentLedgerReport.textDate.getText().toString());
+                startActivity(new Intent(LedgerReportActivity.this,GamePlayAmountHistoryActivity.class).putExtras(bundle));
+                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+            }
+        });
         binding.contentLedgerReport.textDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

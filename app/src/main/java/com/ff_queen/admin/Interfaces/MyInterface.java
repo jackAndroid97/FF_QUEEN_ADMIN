@@ -73,6 +73,10 @@ public interface MyInterface {
     @FormUrlEncoded
     @POST("fetch_time.php")
     Call<String> fetch_time(@Field("game_id") String game_id);
+
+    @FormUrlEncoded
+    @POST("fetch_baji_dropdown.php")
+    Call<String> fetch_baji_dropdown(@Field("game_id") String game_id);
     @FormUrlEncoded
     @POST("lucky_seven_game_timing.php")
     Call<String> fetchLuckyGameTimings(@Field("game_id") String game_id, @Field("page") String page, @Field("type") String type);
@@ -270,6 +274,10 @@ public interface MyInterface {
     @GET("fetch_lucky_saven_no.php")
     Call<String> fetch_lucky_saven_no();
 
+    @FormUrlEncoded
+    @POST("fetch_total_gameplay.php")
+    Call<String> fetch_total_gameplay(@Field("date")String date);
+
     @GET("fetch_marquee.php")
     Call<String> fetch_marquee();
 
@@ -314,7 +322,7 @@ public interface MyInterface {
     Call<String> fetch_money_request(@Field("number") String number,@Field("type") String type);
     @FormUrlEncoded
     @POST("fetch_money_request_two.php")
-    Call<String> fetch_money_request_two(@Field("date") String number);
+    Call<String> fetch_money_request_two(@Field("date") String date,@Field("number") String number);
 
     @FormUrlEncoded
     @POST("approved_request.php")
@@ -331,7 +339,7 @@ public interface MyInterface {
 
     @FormUrlEncoded
     @POST("fetch_withdraw_req_two.php")
-    Call<String> fetch_all_withdraw_req_two(@Field("date") String amount);
+    Call<String> fetch_all_withdraw_req_two(@Field("date") String amount,@Field("number") String number);
 
     @FormUrlEncoded
     @POST("withdraw_approved.php")
@@ -366,12 +374,17 @@ public interface MyInterface {
 
     @FormUrlEncoded
     @POST("betting_details_history.php")
-    Call<String> betting_details_history(@Field("game_id") String game_id,@Field("category") String category,@Field("date") String date,@Field("no_digit") String no_digit);
+    Call<String> betting_details_history(@Field("game_id") String game_id,@Field("category") String category,@Field("date") String date,@Field("no_digit") String no_digit,@Field("number") String number,@Field("baji") String baji);
 
 
     @FormUrlEncoded
     @POST("betting_history_no_wise.php")
-    Call<String> fetch_bid_history_number(@Field("game_id") String game_id,@Field("category") String category,@Field("date") String date,@Field("no_digit") String no_digit);
+    Call<String> fetch_bid_history_number(@Field("game_id") String game_id,@Field("category") String category,@Field("date") String date,@Field("no_digit") String no_digit,@Field("baji") String baji);
+
+    @FormUrlEncoded
+    @POST("fetch_total_gameplay_details.php")
+    Call<String> fetch_total_gameplay_details(@Field("date") String date,@Field("user_id") String user_id);
+
 
     @POST("circle_fetch_admin.php")
     Call<String> circle_csv(@Body JsonObject body);

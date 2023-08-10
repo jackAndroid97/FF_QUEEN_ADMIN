@@ -81,11 +81,11 @@ public class MoneyRequestActivity extends AppCompatActivity {
         date=getIntent().getExtras().getString("date");
 
         if(type.equals("request")){
-            binding.contentMoneyRequest.lin.setVisibility(View.VISIBLE);
+
             fetch_money_request("");
         }else{
-            binding.contentMoneyRequest.lin.setVisibility(View.GONE);
-            fetch_money_request_two();
+
+            fetch_money_request_two("");
         }
         binding.contentMoneyRequest.buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +94,12 @@ public class MoneyRequestActivity extends AppCompatActivity {
                 if(name.equals("")){
                     binding.contentMoneyRequest.name.setError("Enter mobile number");
                 }else{
-                    fetch_money_request(name);
+                    if(type.equals("request")){
+                        fetch_money_request(name);
+                    }else{
+                        fetch_money_request_two(name);
+                    }
+
                 }
             }
         });
@@ -162,8 +167,8 @@ public class MoneyRequestActivity extends AppCompatActivity {
             }
         });
     }
-    private void fetch_money_request_two() {
-        Call<String> call = myInterface.fetch_money_request_two(date);
+    private void fetch_money_request_two(String number) {
+        Call<String> call = myInterface.fetch_money_request_two(date,number);
         ProgressUtils.showLoadingDialog(MoneyRequestActivity.this);
         call.enqueue(new Callback<String>() {
             @Override

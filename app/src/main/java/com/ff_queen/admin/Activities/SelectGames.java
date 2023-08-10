@@ -126,7 +126,7 @@ public class SelectGames extends AppCompatActivity {
                         bundle.putString("cat_id", models.get(position).getId());
                         bundle.putString("game_name", game_name);
                         startActivity(new Intent(SelectGames.this, BidHistoryNumberActivity.class).putExtras(bundle));
-                        finish();
+
 
                 }
             });

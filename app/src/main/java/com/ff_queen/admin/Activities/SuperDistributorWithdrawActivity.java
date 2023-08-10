@@ -75,12 +75,12 @@ public class SuperDistributorWithdrawActivity extends AppCompatActivity {
         binding.contentSuperDistributorWithdraw.rvMoneyRequest.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         p_type=getIntent().getExtras().getString("type");
         date=getIntent().getExtras().getString("date");
-        if(type.equals("request")){
-            binding.contentSuperDistributorWithdraw.lin.setVisibility(View.VISIBLE);
+        if(p_type.equals("request")){
+
             fetchAllWithdrawRequest("");
         }else{
-            binding.contentSuperDistributorWithdraw.lin.setVisibility(View.GONE);
-            fetchAllWithdrawRequestTwo();
+
+            fetchAllWithdrawRequestTwo("");
         }
         binding.contentSuperDistributorWithdraw.buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +89,12 @@ public class SuperDistributorWithdrawActivity extends AppCompatActivity {
                 if(name.equals("")){
                     binding.contentSuperDistributorWithdraw.name.setError("Enter mobile number");
                 }else{
-                    fetchAllWithdrawRequest(name);
+                    if(p_type.equals("request")){
+                        fetchAllWithdrawRequest(name);
+                    }else{
+                        fetchAllWithdrawRequestTwo(name);
+                    }
+
                 }
             }
         });
@@ -165,8 +170,8 @@ public class SuperDistributorWithdrawActivity extends AppCompatActivity {
             }
         });
     }
-    private void fetchAllWithdrawRequestTwo() {
-        Call<String> call = myInterface.fetch_all_withdraw_req_two(date);
+    private void fetchAllWithdrawRequestTwo(String number) {
+        Call<String> call = myInterface.fetch_all_withdraw_req_two(date,number);
         ProgressUtils.showLoadingDialog(SuperDistributorWithdrawActivity.this);
         call.enqueue(new Callback<String>() {
             @Override

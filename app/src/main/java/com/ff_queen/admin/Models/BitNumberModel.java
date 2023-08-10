@@ -22,11 +22,5 @@ public class BitNumberModel {
 
 
 
-    public void setDigit(String digit) {
-        this.digit = digit;
-    }
 
-    public void setTotal_no_wise_rs(String total_no_wise_rs) {
-        this.total_no_wise_rs = total_no_wise_rs;
-    }
 }

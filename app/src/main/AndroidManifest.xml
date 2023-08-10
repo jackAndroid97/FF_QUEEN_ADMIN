@@ -42,6 +42,14 @@
             android:exported="false"
             android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
         <activity
+            android:name=".Activities.GamePlayAmountHistoryActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
+            android:name=".Activities.GamePlayDetailsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />
+        <activity
             android:name=".Activities.SelectGames"
             android:exported="false"
             android:theme="@style/Theme.Play_WinAdmin.NoActionBar" />

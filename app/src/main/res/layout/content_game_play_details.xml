@@ -12,6 +12,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:id="@+id/lin"
         android:gravity="center"
+        android:visibility="gone"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_15sdp"
         android:orientation="horizontal">
@@ -75,9 +76,35 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textColor="@color/white"
+            android:text="Game Name"
+            android:gravity="center"
+            android:background="@drawable/box_text"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:text="Category"
+            android:gravity="center"
+            android:background="@drawable/box_text"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:text="Baji"
+            android:gravity="center"
+            android:background="@drawable/box_text"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="@color/white"
             android:text="Digit"
             android:gravity="center"
-            android:paddingLeft="@dimen/_10sdp"
             android:background="@drawable/box_text"
             />
         <TextView
@@ -90,16 +117,7 @@
             android:paddingLeft="@dimen/_10sdp"
             android:background="@drawable/box_text"
             />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:paddingLeft="@dimen/_10sdp"
-            android:textColor="@color/white"
-            android:text="Action"
-            android:background="@drawable/box_text"
-            />
+
 
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView

@@ -8,105 +8,70 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginHorizontal="@dimen/_8sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:orientation="horizontal"
+
         >
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="Date"
-            android:gravity="center_vertical"
-            android:id="@+id/txt_name"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="Date"
-            android:gravity="center_vertical"
-            android:id="@+id/txt_mobile"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
-            android:text="Desc"
-            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:text=""
+            android:gravity="center"
+            android:background="@drawable/box_text"
             android:id="@+id/txt_g_name"
-            android:textSize="14sp"
+            android:textSize="10sp"
             android:textStyle="bold"
             />
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:gravity="center_vertical"
-            android:text="Amt"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:textSize="14sp"
-            android:textStyle="bold"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text=""
             android:id="@+id/category"
-
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:background="@drawable/box_text"
             />
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:gravity="center_vertical"
-            android:text="Amt"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:textSize="14sp"
-            android:textStyle="bold"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text=""
             android:id="@+id/baji"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:gravity="center_vertical"
-            android:text="Amt"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:textSize="14sp"
+            android:textSize="10sp"
             android:textStyle="bold"
-            android:id="@+id/txt_digit"
+            android:background="@drawable/box_text"
             />
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="Bal"
-            android:id="@+id/txt_amt"
-            android:gravity="center_vertical"
-            android:textSize="14sp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text=""
+            android:id="@+id/digit"
+            android:textSize="10sp"
             android:textStyle="bold"
+            android:background="@drawable/box_text"
             />
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="Bal"
-            android:id="@+id/txt_date"
-            android:gravity="center_vertical"
-            android:textSize="14sp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text=""
+            android:id="@+id/txt_amount"
+            android:textSize="10sp"
             android:textStyle="bold"
+            android:background="@drawable/box_text"
             />
-        <View
-            android:id="@+id/img_dash"
-            android:layout_width="match_parent"
-            android:layout_height="0.8dp"
-            android:visibility="visible"
-            android:layout_marginVertical="@dimen/_7sdp"
-            android:background="@color/grey_view"
-            android:layerType="software" />
-
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -229,5 +194,13 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/img_dash"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_5sdp"
+        android:layout_below="@id/linear"
+        android:visibility="gone"
 
+        android:layout_marginVertical="@dimen/_10sdp"
+        android:layerType="software" />
 </LinearLayout>

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,13 +19,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ff_queen.admin.Interfaces.MyInterface;
+import com.ff_queen.admin.Models.Baji_Model;
 import com.ff_queen.admin.Models.BitNumberModel;
+import com.ff_queen.admin.Models.G_T_Model;
 import com.ff_queen.admin.Models.PassBookModel;
 import com.ff_queen.admin.R;
 import com.ff_queen.admin.Utilities.ApiClient;
 import com.ff_queen.admin.Utilities.ProgressUtils;
 import com.ff_queen.admin.ViewModel.ApiResponse;
 import com.ff_queen.admin.databinding.ActivityBidHistoryNumberBinding;
+import com.weiwangcn.betterspinner.library.BetterSpinner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,14 +50,17 @@ public class BidHistoryNumberActivity extends AppCompatActivity {
     public static ActivityBidHistoryNumberBinding binding;
     private ApiResponse apiResponse;
     private MyInterface myInterface;
+    private BetterSpinner slotSpinner;
     private final int MY_PERMISSIONS_REQUEST_USE_CAMERA = 0x00AF;
     int start_month, start_year, start_day;
     private String start_date = "";
     List<BitNumberModel> payment_models = new ArrayList<>();
-    String date="";
+    String date="",b_id="1";
     String game_id,game_name,cat_id;
     Transaction_Adapter adapter;
     RecyclerView rv_passbook;
+    private String[] sample = {"NO DATA"};
+    private List<Baji_Model> baji_models = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +81,11 @@ public class BidHistoryNumberActivity extends AppCompatActivity {
         date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         binding.contentBidHistoryNumber.textDate.setText(date);
 
-        fetch_transaction_history("",date);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, sample);
+        binding.contentBidHistoryNumber.baji.setAdapter(adapter);
+        binding.contentBidHistoryNumber.baji.setText("Baji: 1");
+        fetch_transaction_history("",date,"1");
         binding.contentBidHistoryNumber.textDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,11 +124,17 @@ public class BidHistoryNumberActivity extends AppCompatActivity {
         binding.contentBidHistoryNumber.buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fetch_transaction_history(
-
-                        binding.contentBidHistoryNumber.digit.getText().toString(),start_date);
+                fetch_transaction_history(binding.contentBidHistoryNumber.digit.getText().toString(),start_date,b_id);
             }
         });
+        binding.contentBidHistoryNumber.baji.setOnItemClickListener((parent, view, position, id) -> {
+            Baji_Model baji_model = (Baji_Model) parent.getItemAtPosition(position);
+            b_id = baji_model.getId();
+            binding.contentBidHistoryNumber.baji.setText(baji_model.getName());
+
+        });
+
+        fetchBaji();
     }
 
     public class Transaction_Adapter extends RecyclerView.Adapter<Transaction_Adapter.MyViewHolder> {
@@ -153,6 +170,7 @@ public class BidHistoryNumberActivity extends AppCompatActivity {
                     bundle.putString("cat_id",cat_id);
                     bundle.putString("digit",models.get(position).getDigit());
                     bundle.putString("date",binding.contentBidHistoryNumber.textDate.getText().toString());
+                    bundle.putString("baji",b_id);
                     context.startActivity(new Intent(context,BidHistoryActivity.class).putExtras(bundle));
                 }
             });
@@ -180,8 +198,8 @@ public class BidHistoryNumberActivity extends AppCompatActivity {
         }
     }
 
-    private void fetch_transaction_history(String no_digit, String date) {
-        Call<String> call = myInterface.fetch_bid_history_number(game_id,cat_id,date,no_digit);
+    private void fetch_transaction_history(String no_digit, String date,String baji) {
+        Call<String> call = myInterface.fetch_bid_history_number(game_id,cat_id,date,no_digit,baji);
         ProgressUtils.showLoadingDialog(BidHistoryNumberActivity.this);
         call.enqueue(new Callback<String>() {
             @Override
@@ -234,7 +252,52 @@ public class BidHistoryNumberActivity extends AppCompatActivity {
         });
     }
 
+    private void fetchBaji() {
+        Call<String> call = myInterface.fetch_baji_dropdown(game_id);
+        // Toast.makeText(this, "" + game_id, Toast.LENGTH_SHORT).show();
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String res = response.body();
+                if (res == null) {
+                    Toast.makeText(BidHistoryNumberActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        JSONArray jsonArray = new JSONArray(res);
+                        if (jsonArray.length() == 0) {
+                            Toast.makeText(BidHistoryNumberActivity.this, "Not timings found.", Toast.LENGTH_SHORT).show();
+                            ProgressUtils.cancelLoading();
 
+                        } else {
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                baji_models.add(new Baji_Model(
+                                        "Baji: "+jsonObject.getString("baji"),
+                                        jsonObject.getString("baji")
+
+                                ));
+                                ArrayAdapter<Baji_Model> adapter = new ArrayAdapter<Baji_Model>(BidHistoryNumberActivity.this,
+                                        android.R.layout.simple_dropdown_item_1line, baji_models);
+
+                                binding.contentBidHistoryNumber.baji.setAdapter(adapter);
+                                ProgressUtils.cancelLoading();
+                            }
+                        }
+                    } catch (JSONException e) {
+                        Toast.makeText(BidHistoryNumberActivity.this, "Something went wrong."+ e.getMessage(), Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+                        ProgressUtils.cancelLoading();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(BidHistoryNumberActivity.this, "Something wnet wrong.", Toast.LENGTH_SHORT).show();
+                ProgressUtils.cancelLoading();
+            }
+        });
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -32,52 +32,7 @@
             android:textSize="14sp"
             android:textStyle="bold"
             />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
-            android:text="Desc"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:id="@+id/txt_g_name"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:gravity="center_vertical"
-            android:text="Amt"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:id="@+id/category"
 
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:gravity="center_vertical"
-            android:text="Amt"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:id="@+id/baji"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:gravity="center_vertical"
-            android:text="Amt"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:id="@+id/txt_digit"
-            />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -97,6 +52,17 @@
             android:gravity="center_vertical"
             android:textSize="14sp"
             android:textStyle="bold"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/green"
+            android:text="View"
+            android:id="@+id/txt_view"
+            android:gravity="end"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginHorizontal="@dimen/_8sdp"
             />
         <View
             android:id="@+id/img_dash"
