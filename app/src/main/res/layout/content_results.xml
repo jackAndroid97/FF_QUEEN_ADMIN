@@ -14,32 +14,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_alignParentTop="true">
-
-        <com.weiwangcn.betterspinner.library.BetterSpinner
-            android:id="@+id/game_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Select Game"
-            android:background="@drawable/grey_box"
-            android:minHeight="48dp"
-            android:visibility="gone"
-            android:padding="8dp"/>
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp"/>
-        <com.weiwangcn.betterspinner.library.BetterSpinner
-            android:id="@+id/category_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Select Category"
-            android:background="@drawable/grey_box"
-            android:minHeight="48dp"
-            android:padding="8dp"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,9 +21,9 @@
 
             <TextView
                 android:id="@+id/date_view"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_38sdp"
+                android:gravity="center_vertical"
                 android:padding="10dp"
                 android:textColor="?android:textColorPrimary"
                 android:background="@drawable/custom_outlined_box"
@@ -60,6 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="5dp"
+                android:visibility="gone"
                 app:cardUseCompatPadding="true">
 
                 <TextView
@@ -80,16 +55,48 @@
             android:layout_height="10dp"/>
 
         <com.weiwangcn.betterspinner.library.BetterSpinner
-            android:id="@+id/slot_spinner"
+            android:id="@+id/baji"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Select Game Slot"
+            android:hint="Select Baji"
+            android:background="@drawable/grey_box"
+            android:minHeight="48dp"
+            android:visibility="visible"
+            android:padding="8dp"/>
+        <Space
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="10dp"/>
+        <com.weiwangcn.betterspinner.library.BetterSpinner
+            android:id="@+id/category_spinner"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:hint="Select Game Type"
             android:background="@drawable/grey_box"
             android:minHeight="48dp"
             android:padding="8dp"/>
 
         <Space
             android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="10dp"/>
+
+
+
+        <com.weiwangcn.betterspinner.library.BetterSpinner
+            android:id="@+id/slot_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Select Game Slot"
+            android:visibility="gone"
+            android:background="@drawable/grey_box"
+            android:minHeight="48dp"
+            android:padding="8dp"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="10dp"/>
 
         <com.weiwangcn.betterspinner.library.BetterSpinner
@@ -106,20 +113,60 @@
             android:layout_width="match_parent"
             android:layout_height="10dp"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_winning_no"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Winning Number"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            android:orientation="horizontal">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_winning_no"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Single"
+                android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/winning_number_edtTxt"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="number"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/winning_number_edtTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:maxLength="1"
+                    android:inputType="number"/>
 
-        </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Jodi"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/winning_number_jodi"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:maxLength="2"
+                    android:inputType="number"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Patti"
+                android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/winning_number_patti"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:maxLength="3"
+                    android:inputType="number"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
 
         <Space
             android:layout_width="match_parent"

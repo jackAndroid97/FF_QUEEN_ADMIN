@@ -98,6 +98,15 @@ public class LedgerReportActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
             }
         });
+        binding.contentLedgerReport.gAmountView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle=new Bundle();
+                bundle.putString("date",binding.contentLedgerReport.textDate.getText().toString());
+                startActivity(new Intent(LedgerReportActivity.this,WinAmountHistoryActivity.class).putExtras(bundle));
+                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+            }
+        });
         binding.contentLedgerReport.textDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -191,6 +200,9 @@ public class LedgerReportActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+
+                startActivity(new Intent(LedgerReportActivity.this,MainActivity.class));
+                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 finish();
                 return true;
         }
@@ -202,6 +214,8 @@ public class LedgerReportActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        startActivity(new Intent(LedgerReportActivity.this,MainActivity.class));
+        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
         finish();
     }
 }

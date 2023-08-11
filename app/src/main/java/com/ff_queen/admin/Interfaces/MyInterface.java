@@ -37,6 +37,9 @@ public interface MyInterface {
     @GET("fetch_total_user.php")
     Call<String> fetch_all_user();
 
+    @GET("fetch_profile.php")
+    Call<String> fetch_profile();
+
     @FormUrlEncoded
     @POST("login.php")
     Call<String> login(@Field("email") String email, @Field("password") String password);
@@ -151,11 +154,12 @@ public interface MyInterface {
     @FormUrlEncoded
     @POST("add_fatafat_result.php")
     Call<String> add_result(@Field("game_id") String game_id ,
-                            @Field("game_time_id") String slot_id,
+                            @Field("baji") String slot_id,
                             @Field("result_date") String result_date,
-                            @Field("category_id") String category_id,
-                            @Field("result") String winning_number,
-                            @Field("baji") String baji);
+                            @Field("baji_id") String category_id,
+                            @Field("single_result") String winning_number,
+                            @Field("double_result") String baji,
+                            @Field("tripple_result") String tripple_result);
 
     @FormUrlEncoded
     @POST("add_lucky_seven_result.php")
@@ -277,6 +281,10 @@ public interface MyInterface {
     @FormUrlEncoded
     @POST("fetch_total_gameplay.php")
     Call<String> fetch_total_gameplay(@Field("date")String date);
+
+    @FormUrlEncoded
+    @POST("win_amount_details.php")
+    Call<String> win_amount_details(@Field("date")String date,@Field("number") String number);
 
     @GET("fetch_marquee.php")
     Call<String> fetch_marquee();

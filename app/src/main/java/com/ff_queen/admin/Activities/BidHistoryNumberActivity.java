@@ -273,6 +273,7 @@ public class BidHistoryNumberActivity extends AppCompatActivity {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                                 baji_models.add(new Baji_Model(
                                         "Baji: "+jsonObject.getString("baji"),
+                                        jsonObject.getString("baji_id"),
                                         jsonObject.getString("baji")
 
                                 ));

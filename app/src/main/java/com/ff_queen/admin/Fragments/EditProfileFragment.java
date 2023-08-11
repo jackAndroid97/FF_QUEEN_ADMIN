@@ -1,5 +1,6 @@
 package com.ff_queen.admin.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.ff_queen.admin.Activities.Login_Activity;
+import com.ff_queen.admin.Activities.MainActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import com.ff_queen.admin.Interfaces.MyInterface;
 import com.ff_queen.admin.Models.User;
@@ -67,10 +70,50 @@ public class EditProfileFragment extends Fragment {
                 }
             }
         });
-
+        fetch_profile();
         return view;
 
 
+    }
+    private void fetch_profile() {
+
+
+        Call<String> call = myInterface.fetch_profile();
+        ProgressUtils.showLoadingDialog(getActivity());
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String res = response.body();
+                if (res == null){
+                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                    ProgressUtils.cancelLoading();
+                }
+                else {
+                    try {
+                        JSONObject jsonObject = new JSONObject(res);
+                        if (jsonObject.getString("rec").equals("0")) {
+                            Toast.makeText(getActivity(), "Data not found", Toast.LENGTH_SHORT).show();
+                            ProgressUtils.cancelLoading();
+                        } else {
+                            email.getEditText().setText(jsonObject.getString("email"));
+                            password.getEditText().setText(jsonObject.getString("password"));
+                            w_number.setText(jsonObject.getString("whatsapp"));
+                            youtube_link.setText(jsonObject.getString("link"));
+                            ProgressUtils.cancelLoading();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        ProgressUtils.cancelLoading();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(getActivity(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                ProgressUtils.cancelLoading();
+            }
+        });
     }
 
     private void updateProfile()
@@ -90,10 +133,7 @@ public class EditProfileFragment extends Fragment {
                     {
                         Toast.makeText(getContext(), "Update Successfully", Toast.LENGTH_SHORT).show();
                         ProgressUtils.cancelLoading();
-                        email.getEditText().setText("");
-                        password.getEditText().setText("");
-                        w_number.setText("");
-                        youtube_link.setText("");
+                        fetch_profile();
                     }
                     else
                     {

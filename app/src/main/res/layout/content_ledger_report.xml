@@ -163,6 +163,18 @@
                     android:text=""
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:id="@+id/tWinAmount"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_weight="0.5"
+                    android:textSize="13sp"
+                    android:textColor="@color/green"
+                    android:text="View"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:gravity="end"
+                    android:visibility="visible"
+                    android:id="@+id/gAmountView"/>
 
             </LinearLayout>
 

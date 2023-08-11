@@ -232,7 +232,13 @@ public class SuperDistributorWithdrawActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                if(p_type.equals("request")){
+                    startActivity(new Intent(SuperDistributorWithdrawActivity.this,MainActivity.class));
+                    finishAffinity();
+                }else{
+                    startActivity(new Intent(SuperDistributorWithdrawActivity.this,LedgerReportActivity.class));
+                    finishAffinity();
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -241,7 +247,13 @@ public class SuperDistributorWithdrawActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        finish();
+        if(p_type.equals("request")){
+            startActivity(new Intent(SuperDistributorWithdrawActivity.this,MainActivity.class));
+            finishAffinity();
+        }else{
+            startActivity(new Intent(SuperDistributorWithdrawActivity.this,LedgerReportActivity.class));
+            finishAffinity();
+        }
     }
     public class WithdrawAllRequestAdapter extends RecyclerView.Adapter<WithdrawAllRequestAdapter.ViewHolder> {
 
@@ -297,9 +309,11 @@ public class SuperDistributorWithdrawActivity extends AppCompatActivity {
             if(p_type.equals("request")){
                 holder.binding.btnApproed.setVisibility(View.VISIBLE);
                 holder.binding.btnReject.setVisibility(View.VISIBLE);
+                holder.binding.remarks.setVisibility(View.VISIBLE);
             }else {
                 holder.binding.btnApproed.setVisibility(View.GONE);
                 holder.binding.btnReject.setVisibility(View.GONE);
+                holder.binding.remarks.setVisibility(View.GONE);
             }
             holder.binding.name.setText(model.getName());
             holder.binding.amount.setText("₹ "+model.getAmount());

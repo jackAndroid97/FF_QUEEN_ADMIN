@@ -1,5 +1,7 @@
 package com.ff_queen.admin.Activities;
 
+import static com.ff_queen.admin.Activities.BidHistoryNumberActivity.binding;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -15,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ff_queen.admin.Models.Baji_Model;
 import com.ff_queen.admin.Models.G_T_Model;
 import com.ff_queen.admin.Models.Game_Model;
 import com.google.android.material.textfield.TextInputLayout;
@@ -43,17 +46,17 @@ import retrofit2.Response;
 
 public class AddResultsActivity extends AppCompatActivity {
 
-    private BetterSpinner categorySpinner, wining_no_spinner,game_spinner;
+    private BetterSpinner categorySpinner, wining_no_spinner,baji_spiner;
     private BetterSpinner slotSpinner;
     private TextView dateTextView;
     private TextView selectDateBtn;
-    private EditText winningNumberEditTxt;
+    private EditText winningNumberEditTxt,winning_number_jodi,winning_number_patti;
     private TextView addResultBtn;
     private MyInterface myInterface;
     private List<Category> category_list = new ArrayList<>();
     private String[] sample = {"NO DATA"};
     private String categoryID = "";
-    private String slotID = "";
+    private String bajiID = "";
     private String baji = "";
     private String game_id, game_name;
     private List<G_T_Model> timing_model_list = new ArrayList<>();
@@ -68,6 +71,7 @@ public class AddResultsActivity extends AppCompatActivity {
     private String currentDate;
     private TextInputLayout til_winning_no;
     List<Game_Model> game_models = new ArrayList<>();
+    private List<Baji_Model> baji_models = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,10 +83,12 @@ public class AddResultsActivity extends AppCompatActivity {
         dateTextView = findViewById(R.id.date_view);
         selectDateBtn = findViewById(R.id.select_date_btn);
         winningNumberEditTxt = findViewById(R.id.winning_number_edtTxt);
+        winning_number_jodi = findViewById(R.id.winning_number_jodi);
+        winning_number_patti = findViewById(R.id.winning_number_patti);
         addResultBtn = findViewById(R.id.add_result_btn);
         wining_no_spinner = findViewById(R.id.wining_no_spinner);
         til_winning_no = findViewById(R.id.til_winning_no);
-        game_spinner = findViewById(R.id.game_spinner);
+        baji_spiner = findViewById(R.id.baji);
 
         myInterface = ApiClient.getApiClient().create(MyInterface.class);
 
@@ -110,66 +116,20 @@ public class AddResultsActivity extends AppCompatActivity {
         categorySpinner.setAdapter(adapter);
         slotSpinner.setAdapter(adapter);
         wining_no_spinner.setAdapter(adapter);
-        game_spinner.setAdapter(adapter);
-
-       // fetchGame();
-        fetchCategory();
-        fetchGameTimings();
-
-        categorySpinner.setOnItemClickListener((parent, view, position, id) -> {
-            Category category = (Category) parent.getItemAtPosition(position);
-            categoryID = category.id;
-            selectedCategory = category.category;
-
-         /*   if (selectedCategory.equals("SINGLE")) {
-
-                wining_no_spinner.setVisibility(View.GONE);
-                til_winning_no.setVisibility(View.VISIBLE);
-                int maxLength = 1;
-                winningNumberEditTxt.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
-
-            } else {
-
-                wining_no_spinner.setVisibility(View.VISIBLE);
-                til_winning_no.setVisibility(View.GONE);
-                fetchFatafatWinningNo();
-                *//*int maxLength = 3;
-                winningNumberEditTxt.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});*//*
-            }*/
-        });
-
-      /*  game_spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Game_Model game_model = (Game_Model) adapterView.getItemAtPosition(i);
-               String g_id = game_model.getId();
-
-            }
-        });*/
+        baji_spiner.setAdapter(adapter);
 
 
-      /*  wining_no_spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Spin_Wining_No_Model model = (Spin_Wining_No_Model) adapterView.getItemAtPosition(i);
-
-                winningNumber = model.getNo();
-            }
-        });
-*/
-
-        slotSpinner.setOnItemClickListener((parent, view, position, id) -> {
-            G_T_Model timing_model = (G_T_Model) parent.getItemAtPosition(position);
-            slotID = timing_model.getId();
-            baji = timing_model.getCount();
+        baji_spiner.setOnItemClickListener((parent, view, position, id) -> {
+            Baji_Model baji_model = (Baji_Model) parent.getItemAtPosition(position);
+            bajiID = baji_model.getId();
+            baji = baji_model.getBaji();
             //selectedSlot = timing_model.baji;
 
         });
 
 //        winningNumber = winningNumberEditTxt.getText().toString();
 
-        selectDateBtn.setOnClickListener(view -> {
+        dateTextView.setOnClickListener(view -> {
             // Get Current Date
             final Calendar c = Calendar.getInstance();
             int mYear = c.get(Calendar.YEAR);
@@ -199,7 +159,7 @@ public class AddResultsActivity extends AppCompatActivity {
                         start_date = year + "-" + month + "-" + day;
 
                     }, mYear, mMonth, mDay);
-            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+           // datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
             datePickerDialog.show();
         });
 
@@ -211,30 +171,32 @@ public class AddResultsActivity extends AppCompatActivity {
             }
 */
 
-            if (slotID.equals("")) {
-                Toast.makeText(this, "Select a slot.", Toast.LENGTH_SHORT).show();
-            } else if (categoryID.equals("")) {
-                Toast.makeText(this, "Select a category.", Toast.LENGTH_SHORT).show();
+            if (bajiID.equals("")) {
+                Toast.makeText(this, "Select a Baji.", Toast.LENGTH_SHORT).show();
             }
-            else if (categoryID.equals("")) {
-                Toast.makeText(this, "Select a category.", Toast.LENGTH_SHORT).show();
-            } else if (dateTextView.getText().toString().equals("Please select a date") || dateTextView.getText().toString().isEmpty() || dateTextView.getText().toString() == null) {
+            else if (dateTextView.getText().toString().equals("Please select a date") || dateTextView.getText().toString().isEmpty() || dateTextView.getText().toString() == null) {
                 Toast.makeText(this, "Select a date.", Toast.LENGTH_SHORT).show();
             } else if (winningNumberEditTxt.getText().toString().equals("")) {
-                Toast.makeText(this, "Enter a winning number", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Enter a single result", Toast.LENGTH_SHORT).show();
             }
-            else if(selectedCategory.equals("JODI") && Integer.parseInt(baji)%2!=0){
-                Toast.makeText(this, "Jodi not available for this baji", Toast.LENGTH_SHORT).show();
+
+           else if (Integer.parseInt(baji)%2 !=0 && !winning_number_jodi.getText().toString().equals("")){
+                Toast.makeText(this, "Jodi Not available for this baji", Toast.LENGTH_SHORT).show();
             }
+            else if (winning_number_patti.getText().toString().equals("")) {
+                Toast.makeText(this, "Enter a patti result", Toast.LENGTH_SHORT).show();
+            }
+
             else {
                 addResult();
             }
         });
+        fetchBaji();
     }
 
     private void addResult() {
         String resultDate = dateTextView.getText().toString();
-        Call<String> call = myInterface.add_result(game_id, slotID, resultDate, categoryID, winningNumberEditTxt.getText().toString().trim(),baji);
+        Call<String> call = myInterface.add_result(game_id, baji, resultDate, bajiID, winningNumberEditTxt.getText().toString().trim(), winning_number_jodi.getText().toString().trim(), winning_number_patti.getText().toString().trim());
         ProgressUtils.showLoadingDialog(AddResultsActivity.this);
         call.enqueue(new Callback<String>() {
             @Override
@@ -248,8 +210,10 @@ public class AddResultsActivity extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(res);
                         if (jsonObject.getString("rec").equals("0")) {
                             Toast.makeText(AddResultsActivity.this, "Couldn't add result.", Toast.LENGTH_SHORT).show();
+                            ProgressUtils.cancelLoading();
                         } else if (jsonObject.getString("rec").equals("1")) {
                             Toast.makeText(AddResultsActivity.this, "Successfully Added Result!", Toast.LENGTH_SHORT).show();
+                            ProgressUtils.cancelLoading();
                             startActivity(new Intent(AddResultsActivity.this, MainActivity.class));
                             finish();
                         } else {
@@ -320,55 +284,6 @@ public class AddResultsActivity extends AppCompatActivity {
         });
     }
 
-
-    /*private void fetchFatafatWinningNo() {
-
-
-        Call<String> call = myInterface.fetch_fatafat_patti_no();
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String res = response.body();
-                if (res == null) {
-                    Toast.makeText(AddResultsActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                } else {
-                    try {
-                        JSONArray jsonArray = new JSONArray(res);
-                        if (jsonArray.length() == 0) {
-                            Toast.makeText(AddResultsActivity.this, "Not found.", Toast.LENGTH_SHORT).show();
-                            ProgressUtils.cancelLoading();
-
-                        } else {
-                            spin_wining_no_models_list.clear();
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                spin_wining_no_models_list.add(new Spin_Wining_No_Model(jsonObject.getString("id"),
-                                        jsonObject.getString("no")
-                                ));
-                                ArrayAdapter<Spin_Wining_No_Model> adapter = new ArrayAdapter<Spin_Wining_No_Model>(AddResultsActivity.this,
-                                        android.R.layout.simple_dropdown_item_1line, spin_wining_no_models_list);
-
-                                wining_no_spinner.setAdapter(adapter);
-                                ProgressUtils.cancelLoading();
-                            }
-                        }
-                    } catch (JSONException e) {
-                        Toast.makeText(AddResultsActivity.this, "Something went wrong.", Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
-                        ProgressUtils.cancelLoading();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(AddResultsActivity.this, "Something wnet wrong.", Toast.LENGTH_SHORT).show();
-                ProgressUtils.cancelLoading();
-            }
-        });
-    }*/
-
-
     private void fetchGameTimings() {
         Call<String> call = myInterface.fetch_time(game_id);
        // Toast.makeText(this, "" + game_id, Toast.LENGTH_SHORT).show();
@@ -416,57 +331,52 @@ public class AddResultsActivity extends AppCompatActivity {
         });
     }
 
-    private void fetchGame() {
-
-        Call<String> call = myInterface.fetch_active_game();
-        ProgressUtils.showLoadingDialog(AddResultsActivity.this);
+    private void fetchBaji() {
+        Call<String> call = myInterface.fetch_baji_dropdown(game_id);
+        // Toast.makeText(this, "" + game_id, Toast.LENGTH_SHORT).show();
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                if (response.body() != null) {
-                    String res = response.body();
+                String res = response.body();
+                if (res == null) {
+                    Toast.makeText(AddResultsActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                } else {
                     try {
                         JSONArray jsonArray = new JSONArray(res);
                         if (jsonArray.length() == 0) {
+                            Toast.makeText(AddResultsActivity.this, "Not timings found.", Toast.LENGTH_SHORT).show();
                             ProgressUtils.cancelLoading();
 
                         } else {
-                            game_models.clear();
-                            for (int i=0; i<jsonArray.length(); i++)
-                            {
+                            for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                String game_id = jsonObject.getString("id");
-                                String game_name = jsonObject.getString("game_name");
-                                String game_image = jsonObject.getString("image");
-                                Game_Model model = new Game_Model(game_id,game_name,game_image);
-                                game_models.add(model);
+                                baji_models.add(new Baji_Model(
+                                        "Baji: "+jsonObject.getString("baji"),
+                                        jsonObject.getString("baji_id"),
+                                        jsonObject.getString("baji")
+
+                                ));
+                                ArrayAdapter<Baji_Model> adapter = new ArrayAdapter<Baji_Model>(AddResultsActivity.this,
+                                        android.R.layout.simple_dropdown_item_1line, baji_models);
+
+                                baji_spiner.setAdapter(adapter);
+                                ProgressUtils.cancelLoading();
                             }
-                            ArrayAdapter<Game_Model> gameAdapter = new ArrayAdapter<>(AddResultsActivity.this,
-                                    android.R.layout.simple_dropdown_item_1line, game_models);
-                            game_spinner.setAdapter(gameAdapter);
-                            ProgressUtils.cancelLoading();
-
                         }
-
                     } catch (JSONException e) {
+                        Toast.makeText(AddResultsActivity.this, "Something went wrong."+ e.getMessage(), Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                         ProgressUtils.cancelLoading();
-                        Toast.makeText(AddResultsActivity.this, "" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(AddResultsActivity.this, "No Response", Toast.LENGTH_SHORT).show();
-                    ProgressUtils.cancelLoading();
                 }
-
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(AddResultsActivity.this, "Something wnet wrong.", Toast.LENGTH_SHORT).show();
                 ProgressUtils.cancelLoading();
-                Toast.makeText(AddResultsActivity.this, "Error", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     @Override

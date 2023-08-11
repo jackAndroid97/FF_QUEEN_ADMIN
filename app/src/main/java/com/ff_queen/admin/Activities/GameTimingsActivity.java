@@ -147,8 +147,8 @@ public class GameTimingsActivity extends AppCompatActivity {
                                         jsonObject.getString("end_time"),
                                         jsonObject.getString("count"),
                                         jsonObject.getString("date_status"),
-                                        jsonObject.getString("game_status"),
-                                        jsonObject.getString("time_id")
+                                        jsonObject.getString("time_id"),
+                                        jsonObject.getString("game_status")
                                 ));
 
                                 adapter.notifyDataSetChanged();

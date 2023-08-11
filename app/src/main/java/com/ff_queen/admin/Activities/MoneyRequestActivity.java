@@ -229,8 +229,13 @@ public class MoneyRequestActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                startActivity(new Intent(MoneyRequestActivity.this,MainActivity.class));
-                finishAffinity();
+                if(type.equals("request")){
+                    startActivity(new Intent(MoneyRequestActivity.this,MainActivity.class));
+                    finishAffinity();
+                }else{
+                    startActivity(new Intent(MoneyRequestActivity.this,LedgerReportActivity.class));
+                    finishAffinity();
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -238,9 +243,14 @@ public class MoneyRequestActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if(type.equals("request")){
+            startActivity(new Intent(MoneyRequestActivity.this,MainActivity.class));
+            finishAffinity();
+        }else{
+            startActivity(new Intent(MoneyRequestActivity.this,LedgerReportActivity.class));
+            finishAffinity();
+        }
 
-        startActivity(new Intent(MoneyRequestActivity.this,MainActivity.class));
-        finishAffinity();
     }
     public class MoneyRequestAdapter extends RecyclerView.Adapter<MoneyRequestAdapter.ViewHolder> {
 
@@ -297,7 +307,7 @@ public class MoneyRequestActivity extends AppCompatActivity {
             holder.binding.date.setText(formatDate);
             holder.binding.time.setText(model.getTime());
             holder.binding.tId.setText("Transaction Id: "+model.getT_id());
-
+            holder.binding.bankDetails.setVisibility(View.GONE);
             holder.binding.bankDetails.setText("Bank Name: "+ model.getBank_name()+"\n"+"Account No: "+model.getAccount_no()
                     +"\n"+"IFSC Code: "+model.getIfsc_code());
             holder.binding.mobile.setText("Mobile Number: "+model.getMobile());
@@ -308,9 +318,12 @@ public class MoneyRequestActivity extends AppCompatActivity {
             if(type.equals("request")){
                 holder.binding.btnApproed.setVisibility(View.VISIBLE);
                 holder.binding.btnReject.setVisibility(View.VISIBLE);
+                holder.binding.remarks.setVisibility(View.VISIBLE);
+
             }else {
                 holder.binding.btnApproed.setVisibility(View.GONE);
                 holder.binding.btnReject.setVisibility(View.GONE);
+                holder.binding.remarks.setVisibility(View.GONE);
             }
 
             holder.binding.passbook.setOnClickListener(new View.OnClickListener() {
