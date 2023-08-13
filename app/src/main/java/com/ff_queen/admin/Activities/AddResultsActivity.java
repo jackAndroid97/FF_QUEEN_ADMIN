@@ -211,7 +211,13 @@ public class AddResultsActivity extends AppCompatActivity {
                         if (jsonObject.getString("rec").equals("0")) {
                             Toast.makeText(AddResultsActivity.this, "Couldn't add result.", Toast.LENGTH_SHORT).show();
                             ProgressUtils.cancelLoading();
-                        } else if (jsonObject.getString("rec").equals("1")) {
+                        }
+                        else if (jsonObject.getString("rec").equals("2")) {
+                            Toast.makeText(AddResultsActivity.this, "Result already added of this baji for today", Toast.LENGTH_SHORT).show();
+                            ProgressUtils.cancelLoading();
+
+                        }
+                        else if (jsonObject.getString("rec").equals("1")) {
                             Toast.makeText(AddResultsActivity.this, "Successfully Added Result!", Toast.LENGTH_SHORT).show();
                             ProgressUtils.cancelLoading();
                             startActivity(new Intent(AddResultsActivity.this, MainActivity.class));

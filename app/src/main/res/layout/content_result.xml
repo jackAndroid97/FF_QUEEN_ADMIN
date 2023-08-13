@@ -1,99 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/nested_scroll"
+    android:background="@color/black"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Activities.ResultActivity"
     >
 
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/noText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
+        android:layout_height="match_parent"
+        android:text="No Result"
+        android:fontFamily="@font/fonts_medium"
+        android:textSize="20sp"
         android:gravity="center"
-        android:background="@color/primary_dark"
-        android:orientation="horizontal"
-        >
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Date"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Starting Time"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="12sp"/>
-        <TextView
-            android:id="@+id/game_type_txt"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Game Type"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="12sp"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Result"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:id="@+id/txt_edit"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Edit"
-            android:visibility="gone"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="12sp"/>
-
-    </LinearLayout>
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_result"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-    <ProgressBar
-        android:id="@+id/progres"
+        android:visibility="gone"/>
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        />
+        android:id="@+id/rvResult"/>
 
 
-    </LinearLayout>
 
-
-</androidx.core.widget.NestedScrollView>
+</LinearLayout>

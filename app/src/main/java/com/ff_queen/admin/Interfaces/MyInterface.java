@@ -392,7 +392,13 @@ public interface MyInterface {
     @FormUrlEncoded
     @POST("fetch_total_gameplay_details.php")
     Call<String> fetch_total_gameplay_details(@Field("date") String date,@Field("user_id") String user_id);
+    @FormUrlEncoded
+    @POST("win_details_amount.php")
+    Call<String> fetch_win_details(@Field("date") String date,@Field("user_id") String user_id);
 
+    @FormUrlEncoded
+    @POST("fetch_result.php")
+    Call<String> fetch_result(@Field("game_id") String game_id);
 
     @POST("circle_fetch_admin.php")
     Call<String> circle_csv(@Body JsonObject body);

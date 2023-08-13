@@ -60,7 +60,7 @@ public class WinDetailsActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
         myInterface = ApiClient.getApiClient().create(MyInterface.class);
-        getSupportActionBar().setTitle("Game Play Details");
+        getSupportActionBar().setTitle("Win Details");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         date=getIntent().getExtras().getString("date");
@@ -132,7 +132,7 @@ public class WinDetailsActivity extends AppCompatActivity {
     }
 
     private void fetch_transaction_history() {
-        Call<String> call = myInterface.fetch_total_gameplay_details(date,user_id);
+        Call<String> call = myInterface.fetch_win_details(date,user_id);
         ProgressUtils.showLoadingDialog(WinDetailsActivity.this);
         call.enqueue(new Callback<String>() {
             @Override
@@ -156,8 +156,8 @@ public class WinDetailsActivity extends AppCompatActivity {
                                         jsonObject.getString("game_name"),
                                         jsonObject.getString("category"),
                                         jsonObject.getString("baji"),
-                                        jsonObject.getString("digit"),
-                                        jsonObject.getString("rupees")
+                                        jsonObject.getString("result"),
+                                        jsonObject.getString("new_amount")
 
 
                                 ));

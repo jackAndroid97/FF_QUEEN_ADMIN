@@ -3,6 +3,7 @@ package com.ff_queen.admin.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,13 +15,17 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ff_queen.admin.EditOtherResultActivity;
 import com.ff_queen.admin.Interfaces.MyInterface;
+import com.ff_queen.admin.Models.Child_Result;
 import com.ff_queen.admin.Models.Result;
+import com.ff_queen.admin.Models.Result_Model;
 import com.ff_queen.admin.R;
 import com.ff_queen.admin.Utilities.ApiClient;
 import com.ff_queen.admin.Utilities.ProgressUtils;
@@ -48,7 +53,7 @@ public class ResultActivity extends AppCompatActivity {
     ActivityResultBinding binding;
     private MyInterface myInterface;
     private List<Result> results = new ArrayList<>();
-    private ResultAdapter adapter;
+
     private String formattedDate;
     private String game_name;
     private String game_id;
@@ -56,7 +61,9 @@ public class ResultActivity extends AppCompatActivity {
     boolean loadMore= false;
     int currentItems, totalItems, scrollOutItems;
     private NestedScrollView nested_scroll;
-
+    Child_Result_Adapter child_result_adapter;
+    List<Result_Model> result_models = new ArrayList<>();
+    Result_Adapter result_adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,402 +87,189 @@ public class ResultActivity extends AppCompatActivity {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         formattedDate = df.format(new Date());
 
-
+        binding.contentResult.rvResult.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         binding.contentResult.rvResult.setLayoutManager(linearLayoutManager);
 
-        adapter = new ResultAdapter(ResultActivity.this, results);
-        binding.contentResult.rvResult.setAdapter(adapter);
 
-        fetchFatafatResult(String.valueOf(page));
-
-        binding.contentResult.nestedScroll.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-               /* currentItems = rv_game_timing.getLayoutManager().getChildCount();
-                totalItems = rv_game_timing.getLayoutManager().getItemCount();
-                scrollOutItems = manager.findFirstVisibleItemPosition();*/
-                if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())){
-
-                    //loadMore=true;
-                    /*if (loadMore && (currentItems + scrollOutItems == totalItems)) {*/
-                    page++;
-                   // binding.contentResult.progres.setVisibility(View.VISIBLE);
+        //binding.contentResult.rvResult.setAdapter(adapter);
 
 
-                        fetchFatafatResult(String.valueOf(page));
-                        binding.contentResult.gameTypeTxt.setVisibility(View.VISIBLE);
 
 
-                    /* }*/
-                }
-                if (scrollY < oldScrollY ){
-                    loadMore =false;
-                }else{
-                    loadMore = true;
-                }
-            }
-        });
-
-
+        fetch_result();
 
 
     }
 
-    private void fetchFatafatResult(String page) {
-        Call<String> call = myInterface.fetch_fatafat_result(page);
+    private void fetch_result() {
+        Call<String> call = myInterface.fetch_result(game_id);
         ProgressUtils.showLoadingDialog(ResultActivity.this);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                String res = response.body();
-                if (res == null) {
-                    Toast.makeText(ResultActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                    //binding.contentResult.progres.setVisibility(View.GONE);
-                    ProgressUtils.cancelLoading();
-                } else {
+                if(response.body()!=null){
+                    String res = response.body();
                     try {
-                        JSONArray jsonArray = new JSONArray(res);
+                        JSONObject jsonObject = new JSONObject(res);
+                        JSONArray jsonArray = jsonObject.getJSONArray("result");
                         if (jsonArray.length() == 0) {
-                            Toast.makeText(ResultActivity.this, "Not timings found.", Toast.LENGTH_SHORT).show();
-
-                           // binding.contentResult.progres.setVisibility(View.GONE);
                             ProgressUtils.cancelLoading();
-
+                            result_models.clear();
+                            binding.contentResult.noText.setVisibility(View.VISIBLE);
+                            binding.contentResult.rvResult.setVisibility(View.GONE);
                         } else {
+                            result_models.clear();
+                            binding.contentResult.noText.setVisibility(View.GONE);
+                            binding.contentResult.rvResult.setVisibility(View.VISIBLE);
                             for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                JSONObject jsonObject_1 = jsonArray.getJSONObject(i);
+                                List<Child_Result> single_results = new ArrayList<>();
+                                JSONArray jsonArray_1 = jsonObject_1.getJSONArray("data");
+                                for (int j = 0; j < jsonArray_1.length(); j++){
+                                    JSONObject json = jsonArray_1.getJSONObject(j);
+                                    //JSONObject json1 = jsonArray_1.getJSONObject(1);
+                                    single_results.add(new Child_Result(json.getString("SINGLE"),
+                                            json.getString("PATTI"),
+                                            json.getString("start_time")));
 
-                                results.add(new Result(jsonObject.getString("id"),
-                                        jsonObject.getString("result"),
-                                        jsonObject.getString("date"),
-                                        jsonObject.getString("start_time"),
-                                        jsonObject.getString("cat_name"),
-                                        jsonObject.getString("type"),
-                                        jsonObject.getString("game_time_id"),
-                                        jsonObject.getString("result_date"))
-                                );
-
-                                adapter.notifyDataSetChanged();
+                                }
+                                result_models.add(new Result_Model(
+                                        jsonObject_1.getString("date"),
+                                        single_results));
                             }
+                            result_adapter = new Result_Adapter(ResultActivity.this,result_models);
+                            binding.contentResult.rvResult.setAdapter(result_adapter);
                             ProgressUtils.cancelLoading();
                         }
+
                     } catch (JSONException e) {
-                        Toast.makeText(ResultActivity.this, "Something went wrong.", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
-                        //binding.contentResult.progres.setVisibility(View.GONE);
                         ProgressUtils.cancelLoading();
+                        Toast.makeText(ResultActivity.this, ""+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     }
+                }else{
+                    Toast.makeText(ResultActivity.this, "No Response", Toast.LENGTH_SHORT).show();
+                    ProgressUtils.cancelLoading();
                 }
             }
-
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(ResultActivity.this, "Something wnet wrong.", Toast.LENGTH_SHORT).show();
-                //binding.contentResult.progres.setVisibility(View.GONE);
+//                progressDialog.dismiss();
                 ProgressUtils.cancelLoading();
+                Toast.makeText(ResultActivity.this, "Error", Toast.LENGTH_SHORT).show();
             }
         });
     }
+    public class Result_Adapter extends RecyclerView.Adapter<Result_Adapter.MyViewHolder> {
 
-    private void fetchLuckyResult(String page) {
-        Call<String> call = myInterface.fetchLuckyResult(page);
-//        Toast.makeText(this, "" + game_id, Toast.LENGTH_SHORT).show();
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String res = response.body();
-                if (res == null) {
-                    Toast.makeText(ResultActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                    binding.contentResult.progres.setVisibility(View.GONE);
-                } else {
-                    try {
-                        JSONArray jsonArray = new JSONArray(res);
-                        if (jsonArray.length() == 0) {
-                            Toast.makeText(ResultActivity.this, "Not timings found.", Toast.LENGTH_SHORT).show();
-                            ProgressUtils.cancelLoading();
-                            binding.contentResult.progres.setVisibility(View.GONE);
-
-                        } else {
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                                results.add(new Result(jsonObject.getString("id"),
-                                        jsonObject.getString("result"),
-                                        jsonObject.getString("date"),
-                                        jsonObject.getString("start_time"),
-                                        jsonObject.getString("cat_name"),
-                                        jsonObject.getString("type"),
-                                        jsonObject.getString("game_time_id"),
-                                        jsonObject.getString("result_date"))
-                                );
-
-                                adapter.notifyDataSetChanged();
-                            }
-                        }
-                    } catch (JSONException e) {
-                        Toast.makeText(ResultActivity.this, "Something went wrong.", Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
-                        binding.contentResult.progres.setVisibility(View.GONE);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(ResultActivity.this, "Something wnet wrong.", Toast.LENGTH_SHORT).show();
-                binding.contentResult.progres.setVisibility(View.GONE);
-            }
-        });
-    }
-
-    private void fetchCircleResult(String page) {
-        Call<String> call = myInterface.fetch_circle_result(page);
-//        Toast.makeText(this, "" + game_id, Toast.LENGTH_SHORT).show();
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String res = response.body();
-                if (res == null) {
-                    Toast.makeText(ResultActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                    binding.contentResult.progres.setVisibility(View.GONE);
-                } else {
-                    try {
-                        JSONArray jsonArray = new JSONArray(res);
-                        if (jsonArray.length() == 0) {
-                            Toast.makeText(ResultActivity.this, "Not timings found.", Toast.LENGTH_SHORT).show();
-                            binding.contentResult.progres.setVisibility(View.GONE);
-                            ProgressUtils.cancelLoading();
-
-                        } else {
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                                results.add(new Result(jsonObject.getString("id"),
-                                        jsonObject.getString("result"),
-                                        jsonObject.getString("date"),
-                                        jsonObject.getString("start_time"),
-                                        jsonObject.getString("cat_name"),
-                                        jsonObject.getString("type"),
-                                        jsonObject.getString("game_time_id"),
-                                        jsonObject.getString("result_date"))
-                                );
-
-                                adapter.notifyDataSetChanged();
-                            }
-                        }
-                    } catch (JSONException e) {
-                        Toast.makeText(ResultActivity.this, "Something went wrong.", Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
-                        binding.contentResult.progres.setVisibility(View.GONE);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(ResultActivity.this, "Something wnet wrong.", Toast.LENGTH_SHORT).show();
-                binding.contentResult.progres.setVisibility(View.GONE);
-            }
-        });
-    }
-
-    private void fetchSpinResult(String page) {
-        Call<String> call = myInterface.fetch_spin_result(page);
-//        Toast.makeText(this, "" + game_id, Toast.LENGTH_SHORT).show();
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String res = response.body();
-                if (res == null) {
-                    Toast.makeText(ResultActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                    binding.contentResult.progres.setVisibility(View.GONE);
-                } else {
-                    try {
-                        JSONArray jsonArray = new JSONArray(res);
-                        if (jsonArray.length() == 0) {
-                            Toast.makeText(ResultActivity.this, "Not timings found.", Toast.LENGTH_SHORT).show();
-                            ProgressUtils.cancelLoading();
-                            binding.contentResult.progres.setVisibility(View.GONE);
-
-                        } else {
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                                results.add(new Result(jsonObject.getString("id"),
-                                        jsonObject.getString("result_digit"),
-                                        jsonObject.getString("date"),
-                                        jsonObject.getString("start_time"),
-                                        jsonObject.getString("cat_name"),
-                                        jsonObject.getString("type"),
-                                        jsonObject.getString("game_time_id"),
-                                        jsonObject.getString("result_date"))
-                                );
-
-                                adapter.notifyDataSetChanged();
-                            }
-                        }
-                    } catch (JSONException e) {
-                        Toast.makeText(ResultActivity.this, "Something went wrong.", Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
-                        binding.contentResult.progres.setVisibility(View.GONE);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(ResultActivity.this, "Something wnet wrong.", Toast.LENGTH_SHORT).show();
-                binding.contentResult.progres.setVisibility(View.GONE);
-            }
-        });
-    }
-
-    private void fetchThunderResult(String page) {
-        Call<String> call = myInterface.fetchThunderResult(page);
-//        Toast.makeText(this, "" + game_id, Toast.LENGTH_SHORT).show();
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String res = response.body();
-                if (res == null) {
-                    Toast.makeText(ResultActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                    binding.contentResult.progres.setVisibility(View.GONE);
-                } else {
-                    try {
-                        JSONArray jsonArray = new JSONArray(res);
-                        if (jsonArray.length() == 0) {
-                            Toast.makeText(ResultActivity.this, "Not timings found.", Toast.LENGTH_SHORT).show();
-                            ProgressUtils.cancelLoading();
-                            binding.contentResult.progres.setVisibility(View.GONE);
-
-                        } else {
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                                results.add(new Result(jsonObject.getString("id"),
-                                        jsonObject.getString("result"),
-                                        jsonObject.getString("date"),
-                                        jsonObject.getString("start_time"),
-                                        jsonObject.getString("cat_name"),
-                                        jsonObject.getString("type"),
-                                        jsonObject.getString("game_time_id"),
-                                        jsonObject.getString("result_date"))
-                                );
-
-                                adapter.notifyDataSetChanged();
-                            }
-                        }
-                    } catch (JSONException e) {
-                        Toast.makeText(ResultActivity.this, "Something went wrong.", Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
-                        binding.contentResult.progres.setVisibility(View.GONE);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(ResultActivity.this, "Something wnet wrong.", Toast.LENGTH_SHORT).show();
-                binding.contentResult.progres.setVisibility(View.GONE);
-            }
-        });
-    }
-
-    public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.MyViewHolder> {
-        List<Result> models;
         Context context;
+        List<Result_Model> result_model;
+        List<Child_Result> single_model;
+        List<Child_Result> patti_model;
 
-        public ResultAdapter(@NonNull Context context, @NonNull List<Result> models) {
-            this.models = models;
+        public Result_Adapter(Context context, List<Result_Model> result_model) {
             this.context = context;
+            this.result_model = result_model;
         }
-
         @NonNull
         @Override
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            LayoutInflater inflater = LayoutInflater.from(context);
             View view = inflater.inflate(R.layout.single_result, parent, false);
             return new MyViewHolder(view);
-        }
 
+        }
         @Override
-        public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
-            holder.date.setText(models.get(position).result_date);
+        public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+            Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.item_slide_right);
+            holder.itemView.startAnimation(animation);
+            holder.text_date.setText("Date: "+result_model.get(position).getDate());
+            single_model=result_model.get(position).getSingle_models();
+//            patti_model=result_model.get(position).getPatti_models();
 
-                holder.starting_time.setText(models.get(position).time);
-                holder.game_type.setVisibility(View.GONE);
-                holder.game_type.setVisibility(View.VISIBLE);
+            holder.rv_single.setHasFixedSize(true);
+            holder.rv_single.setLayoutManager(new GridLayoutManager(ResultActivity.this,8));
+            child_result_adapter = new Child_Result_Adapter(context,single_model);
+            holder.rv_single.setAdapter(child_result_adapter);
 
+            /*holder.rv_patti.setHasFixedSize(true);
+            holder.rv_patti.setLayoutManager(new GridLayoutManager(Result_By_Game.this,8));
+            child_result_adapter = new Child_Result_Adapter(context,patti_model);
+            holder.rv_patti.setAdapter(child_result_adapter);*/
 
-
-            holder.game_type.setText(models.get(position).cat_name);
-            holder.result.setText(models.get(position).result);
-            Date date2 = null;
-            SimpleDateFormat df =new SimpleDateFormat("yyyy-MM-dd");
-
-
-            holder.editBtn.setOnClickListener(view -> {
-                try {
-
-
-                    if (models.get(position).type.equals("OPEN") && models.get(position).result_date.equals(formattedDate)) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("result_id", models.get(position).id);
-                        bundle.putString("game_time_id", models.get(position).game_time_id);
-                        bundle.putString("result_category", models.get(position).cat_name);
-                        bundle.putString("result_result", models.get(position).result);
-                        bundle.putString("result_date", models.get(position).result_date);
-                        bundle.putString("game_time", models.get(position).time);
-                        bundle.putString("game_name", game_name);
-                        bundle.putString("game_id", game_id);
-                        context.startActivity(new Intent(context, EditResultActivity.class).putExtras(bundle));
-                    } else if (df.parse(models.get(position).result_date).after(df.parse(formattedDate)) ) {
-                                Bundle bundle = new Bundle();
-                                bundle.putString("result_id", models.get(position).id);
-                                bundle.putString("game_time_id", models.get(position).game_time_id);
-                                bundle.putString("result_category", models.get(position).cat_name);
-                                bundle.putString("result_result", models.get(position).result);
-                                bundle.putString("result_date", models.get(position).result_date);
-                                bundle.putString("game_time", models.get(position).time);
-                                bundle.putString("game_name", game_name);
-                                bundle.putString("game_id", game_id);
-                                context.startActivity(new Intent(context, EditResultActivity.class).putExtras(bundle));
-                    } else {
-                        Toast.makeText(context, "Result Timeout!", Toast.LENGTH_SHORT).show();
-                    }
-
-
-
-
-
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            });
         }
-
         @Override
         public int getItemCount() {
-            return models.size();
+            return result_model.size();
         }
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView date, starting_time, game_type, result;
-            ImageView editBtn;
+            TextView text_date;
+            RecyclerView rv_single,rv_patti;
 
             public MyViewHolder(@NonNull View itemView) {
                 super(itemView);
-                date = itemView.findViewById(R.id.date);
-                starting_time = itemView.findViewById(R.id.starting_time);
-                game_type = itemView.findViewById(R.id.game_type);
-                result = itemView.findViewById(R.id.result);
-                editBtn = itemView.findViewById(R.id.editBtn);
+                text_date = itemView.findViewById(R.id.text_date);
+                rv_single = itemView.findViewById(R.id.rv_single);
+                /*rv_patti = itemView.findViewById(R.id.rv_patti);*/
             }
         }
     }
+
+    public class Child_Result_Adapter extends RecyclerView.Adapter<Child_Result_Adapter.MyViewHolder> {
+        Context context;
+        List<Child_Result> child_results;
+
+        public Child_Result_Adapter(Context context, List<Child_Result> child_results) {
+            this.context = context;
+            this.child_results = child_results;
+        }
+        @NonNull
+        @Override
+        public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View view = inflater.inflate(R.layout.single_item_result, parent, false);
+            return new MyViewHolder(view);
+        }
+        @Override
+        public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+//            holder.text_single_digit.setText(child_results.get(position).getSingle_digit());
+//            holder.text_patti_digit.setText(child_results.get(position).getPatti_digit());
+            if(child_results.get(position).getSingle_digit().equals("null")){
+                holder.text_single_digit.setText("--");
+            }else {
+                holder.text_single_digit.setText(child_results.get(position).getSingle_digit());
+            }
+
+            if(child_results.get(position).getPatti_digit().equals("null")){
+                holder.text_patti_digit.setText("--");
+            }
+            else{
+                holder.text_patti_digit.setText(child_results.get(position).getPatti_digit());
+                holder.txt_start_date.setText("baji\n"+child_results.get(position).getStart_date());
+
+            }
+        }
+        @Override
+        public int getItemCount() {
+            return child_results.size();
+        }
+
+        public class MyViewHolder extends RecyclerView.ViewHolder {
+            TextView text_single_digit,text_patti_digit,text_digit,txt_start_date,text_jodi_digit;
+            public MyViewHolder(@NonNull View itemView) {
+                super(itemView);
+                text_single_digit = itemView.findViewById(R.id.text_single_digit);
+                text_patti_digit = itemView.findViewById(R.id.text_patti_digit);
+                txt_start_date = itemView.findViewById(R.id.txt_start_date);
+            }
+        }
+
+    }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
