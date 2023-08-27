@@ -86,30 +86,6 @@ public class GameTimingsActivity extends AppCompatActivity {
 
 
 
-        binding.contentGameTimings.nestedScroll.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-               /* currentItems = binding.contentGameTimings.rvGameTimings.getLayoutManager().getChildCount();
-                totalItems = binding.contentGameTimings.rvGameTimings.getLayoutManager().getItemCount();
-                scrollOutItems = manager.findFirstVisibleItemPosition();*/
-                if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())){
-
-                    //loadMore=true;
-                    /*if (loadMore && (currentItems + scrollOutItems == totalItems)) {*/
-                    page++;
-                    binding.contentGameTimings.progres.setVisibility(View.VISIBLE);
-
-                        fetchGameTimings(game_id, String.valueOf(page));
-
-                    /* }*/
-                }
-                if (scrollY < oldScrollY ){
-                    loadMore =false;
-                }else{
-                    loadMore = true;
-                }
-            }
-        });
 
 
 

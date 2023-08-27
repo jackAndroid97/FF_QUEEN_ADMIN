@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class ApiClient {
-    public static final String BASE_URL = "http://web.easytodb.com/Play_Win/admin_api/";
+    public static final String BASE_URL = "https://ffqueen.co.in/admin_api/";
 
     public static Retrofit retrofit = null;
     public static Retrofit retrofit_lucky_7 = null;

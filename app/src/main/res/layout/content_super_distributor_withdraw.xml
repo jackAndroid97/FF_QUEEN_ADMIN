@@ -28,6 +28,18 @@
             android:textSize="12sp"
             android:inputType="number"
             android:background="@drawable/grey_box"/>
+        <com.weiwangcn.betterspinner.library.BetterSpinner
+            android:id="@+id/type"
+            android:layout_width="0dp"
+            android:layout_weight="01"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:hint="Select"
+            android:background="@drawable/grey_box"
+            android:minHeight="48dp"
+            android:textSize="12sp"
+            android:padding="8dp"/>
+
         <TextView
             android:id="@+id/buttonSearch"
             android:layout_width="0dp"

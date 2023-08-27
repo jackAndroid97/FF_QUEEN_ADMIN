@@ -28,7 +28,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.MyViewholder> 
 
     Context context;
     List<Game_Model> game_models;
-    String url="http://web.easytodb.com/Play_Win/admin_api/Game_image/";
+    String url="https://ffqueen.co.in/admin_api/Game_image/";
     public GameAdapter(Context context, List<Game_Model> game_models) {
         this.context = context;
         this.game_models = game_models;

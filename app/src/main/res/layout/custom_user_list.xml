@@ -47,7 +47,7 @@
             android:padding="@dimen/_2sdp"
             android:textColor="@color/black"
             android:textSize="12sp"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_3sdp"
             />
 
 
@@ -59,7 +59,7 @@
             android:padding="@dimen/_2sdp"
             android:textColor="@color/black"
             android:textSize="12sp"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_3sdp"
             />
         <TextView
             android:id="@+id/wallet"
@@ -69,7 +69,37 @@
             android:padding="@dimen/_2sdp"
             android:textColor="@color/black"
             android:textSize="12sp"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            />
+        <TextView
+            android:id="@+id/pass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Phone No"
+            android:padding="@dimen/_2sdp"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:layout_marginTop="@dimen/_3sdp"
+            />
+        <TextView
+            android:id="@+id/bank_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Phone No"
+            android:padding="@dimen/_2sdp"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:layout_marginTop="@dimen/_3sdp"
+            />
+        <TextView
+            android:id="@+id/upi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Phone No"
+            android:padding="@dimen/_2sdp"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:layout_marginTop="@dimen/_3sdp"
             />
         <TextView
             android:id="@+id/status"
@@ -79,8 +109,9 @@
             android:padding="@dimen/_2sdp"
             android:textColor="@color/black"
             android:textSize="12sp"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_3sdp"
             />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

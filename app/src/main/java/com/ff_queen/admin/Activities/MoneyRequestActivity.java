@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -53,7 +56,9 @@ public class MoneyRequestActivity extends AppCompatActivity {
     private MoneyRequestAdapter adapter;
     String type,date;
     MyInterface myInterface;
-
+    private String[] sample = {"MANUALLY","REQUEST"};
+    String type_txt="";
+    String name="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,33 +84,41 @@ public class MoneyRequestActivity extends AppCompatActivity {
         binding.contentMoneyRequest.rvMoneyRequest.setAdapter(adapter);
         type=getIntent().getExtras().getString("type");
         date=getIntent().getExtras().getString("date");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, sample);
 
+        binding.contentMoneyRequest.type.setAdapter(adapter);
         if(type.equals("request")){
+            binding.contentMoneyRequest.type.setVisibility(View.GONE);
 
             fetch_money_request("");
         }else{
+            binding.contentMoneyRequest.type.setVisibility(View.VISIBLE);
 
-            fetch_money_request_two("");
+            fetch_money_request_two("","");
         }
         binding.contentMoneyRequest.buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name=binding.contentMoneyRequest.name.getText().toString();
-                if(name.equals("")){
-                    binding.contentMoneyRequest.name.setError("Enter mobile number");
-                }else{
+                 name=binding.contentMoneyRequest.name.getText().toString();
+
                     if(type.equals("request")){
                         fetch_money_request(name);
                     }else{
-                        fetch_money_request_two(name);
-                    }
+                        fetch_money_request_two(name,type_txt);
+
 
                 }
             }
         });
        // apiResponse.fetchMoneyRequest();
 
-
+        binding.contentMoneyRequest.type.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                type_txt=binding.contentMoneyRequest.type.getText().toString();
+            }
+        });
 
     }
 
@@ -136,8 +149,8 @@ public class MoneyRequestActivity extends AppCompatActivity {
                                         jsonObject.getString("amount")+".00",
                                         jsonObject.getString("date"),
                                         jsonObject.getString("bank_name"),
-                                        jsonObject.getString("account_no"),
-                                        jsonObject.getString("ifsc_code"),
+                                        jsonObject.getString("account_number"),
+                                        jsonObject.getString("ifsc_number"),
                                         jsonObject.getString("mobile"),
                                         jsonObject.getString("wallet"),
                                         jsonObject.getString("time"),
@@ -167,8 +180,8 @@ public class MoneyRequestActivity extends AppCompatActivity {
             }
         });
     }
-    private void fetch_money_request_two(String number) {
-        Call<String> call = myInterface.fetch_money_request_two(date,number);
+    private void fetch_money_request_two(String number,String type) {
+        Call<String> call = myInterface.fetch_money_request_two(date,number,type);
         ProgressUtils.showLoadingDialog(MoneyRequestActivity.this);
         call.enqueue(new Callback<String>() {
             @Override
@@ -194,8 +207,8 @@ public class MoneyRequestActivity extends AppCompatActivity {
                                         jsonObject.getString("amount")+".00",
                                         jsonObject.getString("date"),
                                         jsonObject.getString("bank_name"),
-                                        jsonObject.getString("account_no"),
-                                        jsonObject.getString("ifsc_code"),
+                                        jsonObject.getString("account_number"),
+                                        jsonObject.getString("ifsc_number"),
                                         jsonObject.getString("mobile"),
                                         jsonObject.getString("wallet"),
                                         jsonObject.getString("time"),
@@ -300,7 +313,12 @@ public class MoneyRequestActivity extends AppCompatActivity {
 
                 e.printStackTrace();
             }
-
+            if(model.getBank_name().equals("")){
+                holder.binding.bankDetails.setVisibility(View.GONE);
+            }
+            else{
+                holder.binding.bankDetails.setVisibility(View.VISIBLE);
+            }
 
             holder.binding.name.setText(model.getName());
             holder.binding.amount.setText("₹ "+model.getAmount());
@@ -340,16 +358,113 @@ public class MoneyRequestActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
+                    Call<String> call = myInterface.approved_request(model.getAmount(),model.getUser_id(),model.getId(),"Success",holder.binding.remarks.getText().toString());
+                    ProgressUtils.showLoadingDialog(context);
+                    call.enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
 
-                    apiResponse.approvedRequest(model.getUser_id(),model.getAmount(),model.getId(),"Success",holder.binding.remarks.getText().toString());
+                            if (response.isSuccessful() && response.body() != null)
+                            {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response.body());
+
+                                    if (jsonObject.getString("rec").equals("1"))
+                                    {
+
+                                        Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show();
+                                        ProgressUtils.cancelLoading();
+                                        Bundle bundle=new Bundle();
+                                        bundle.putString("type",type);
+                                        bundle.putString("date",date);
+                                        startActivity(new Intent(MoneyRequestActivity.this,MoneyRequestActivity.class).putExtras(bundle));
+                                        finish();
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(context, "Not Approved", Toast.LENGTH_SHORT).show();
+                                        ProgressUtils.cancelLoading();
+                                    }
+
+                                } catch (JSONException e) {
+
+                                    Toast.makeText(context, "Something Went wrong", Toast.LENGTH_SHORT).show();
+                                    ProgressUtils.cancelLoading();
+                                }
+                            }
+                            else
+                            {
+                                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                                ProgressUtils.cancelLoading();
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+
+                            Toast.makeText(context, "Slow Network", Toast.LENGTH_SHORT).show();
+                            ProgressUtils.cancelLoading();
+                        }
+                    });
+                 //   apiResponse.approvedRequest(,model.getAmount(),,"",);
 
                 }
             });
             holder.binding.btnReject.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Call<String> call = myInterface.approved_request(model.getAmount(),model.getUser_id(),model.getId(),"Reject",holder.binding.remarks.getText().toString());
+                    ProgressUtils.showLoadingDialog(context);
+                    call.enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
 
-                    apiResponse.approvedRequest(model.getUser_id(),model.getAmount(),model.getId(),"Reject",holder.binding.remarks.getText().toString());
+                            if (response.isSuccessful() && response.body() != null)
+                            {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response.body());
+
+                                    if (jsonObject.getString("rec").equals("1"))
+                                    {
+
+                                        Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show();
+                                        ProgressUtils.cancelLoading();
+
+                                        Bundle bundle=new Bundle();
+                                        bundle.putString("type",type);
+                                        bundle.putString("date",date);
+                                        startActivity(new Intent(MoneyRequestActivity.this,MoneyRequestActivity.class).putExtras(bundle));
+                                        finish();
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(context, "Not Approved", Toast.LENGTH_SHORT).show();
+                                        ProgressUtils.cancelLoading();
+                                    }
+
+                                } catch (JSONException e) {
+
+                                    Toast.makeText(context, "Something Went wrong", Toast.LENGTH_SHORT).show();
+                                    ProgressUtils.cancelLoading();
+                                }
+                            }
+                            else
+                            {
+                                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                                ProgressUtils.cancelLoading();
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+
+                            Toast.makeText(context, "Slow Network", Toast.LENGTH_SHORT).show();
+                            ProgressUtils.cancelLoading();
+                        }
+                    });
+                    //apiResponse.approvedRequest(model.getUser_id(),model.getAmount(),model.getId(),"Reject",holder.binding.remarks.getText().toString());
 
                 }
             });

@@ -68,7 +68,7 @@ public class GamePlayAmountHistoryActivity extends AppCompatActivity {
         rv_passbook.setHasFixedSize(true);
         rv_passbook.setLayoutManager(new LinearLayoutManager(GamePlayAmountHistoryActivity.this,LinearLayoutManager.VERTICAL,false));
        // date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        fetch_total_gameplay();
+        fetch_total_gameplay("");
 
 
         binding.contentGamePlayHistory.buttonSearch.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +78,7 @@ public class GamePlayAmountHistoryActivity extends AppCompatActivity {
                 if(name.equals("")){
                     binding.contentGamePlayHistory.name.setError("Enter mobile number");
                 }else{
-                   // fetch_transaction_history(name);
+                    fetch_total_gameplay(binding.contentGamePlayHistory.name.getText().toString());
                 }
             }
         });
@@ -144,8 +144,8 @@ public class GamePlayAmountHistoryActivity extends AppCompatActivity {
         }
     }
 
-    private void fetch_total_gameplay() {
-        Call<String> call = myInterface.fetch_total_gameplay(date);
+    private void fetch_total_gameplay(String number) {
+        Call<String> call = myInterface.fetch_total_gameplay(date,number);
         ProgressUtils.showLoadingDialog(GamePlayAmountHistoryActivity.this);
         call.enqueue(new Callback<String>() {
             @Override

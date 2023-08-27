@@ -92,7 +92,7 @@ public class UserActivity extends AppCompatActivity {
     private void fetchUser(String num)
     {
 
-        Call<String> call = myInterface.fetch_all_user(num);
+        Call<String> call = myInterface.    fetch_all_user(num);
         ProgressUtils.showLoadingDialog(UserActivity.this);
         call.enqueue(new Callback<String>() {
             @Override
@@ -129,8 +129,13 @@ public class UserActivity extends AppCompatActivity {
                                 String email = jsonObject.getString("email");
                                 String wallet = jsonObject.getString("wallet");
                                 String status = jsonObject.getString("status");
+                                String b_name= jsonObject.getString("bank_name");
+                                String ifsc = jsonObject.getString("ifsc_number");
+                                String a_no = jsonObject.getString("account_number");
+                                String upi = jsonObject.getString("upi");
+                                String pass = jsonObject.getString("password");
 
-                                user_models.add(new User_Model(id,name,email,mobile,wallet,status));
+                                user_models.add(new User_Model(id,name,email,mobile,wallet,status,b_name,pass,upi,ifsc,a_no));
                             }
 
                             binding.contentUser.rvUser.setAdapter(new UserAdapter(UserActivity.this,user_models));
@@ -233,6 +238,25 @@ public class UserActivity extends AppCompatActivity {
                 holder.btn_active.setVisibility(View.VISIBLE);
                 holder.btn_inactive.setVisibility(View.GONE);
             }
+            if (model.getBank_name().equals("null"))
+            {
+                holder.bank_name.setVisibility(View.GONE);
+            }
+            else
+            {
+                holder.bank_name.setVisibility(View.VISIBLE);
+            }
+            if (model.getBank_name().equals("null"))
+            {
+                holder.upi.setVisibility(View.GONE);
+            }
+            else
+            {
+                holder.upi.setVisibility(View.VISIBLE);
+            }
+            holder.upi.setText("UPI Id: "+model.getUpi());
+            holder.pass.setText("Password: "+model.getPass());
+            holder.bank_name.setText("Bank Name: "+model.getBank_name()+"\n\nAccount No: "+model.getAccount_no()+"\n\nIFSC Code: "+model.getIfsc());
             holder.btn_active.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -363,7 +387,12 @@ public class UserActivity extends AppCompatActivity {
                                                 if (jsonObject.getString("rec").equals("0")) {
                                                     Toast.makeText(context, "Couldn't add result.", Toast.LENGTH_SHORT).show();
                                                     ProgressUtils.cancelLoading();
-                                                } else if (jsonObject.getString("rec").equals("1")) {
+                                                }
+                                                else if (jsonObject.getString("rec").equals("3")) {
+                                                    Toast.makeText(context, "Insufficient Wallet Balance.", Toast.LENGTH_SHORT).show();
+                                                    ProgressUtils.cancelLoading();
+                                                }
+                                                else if (jsonObject.getString("rec").equals("1")) {
                                                     fetchUser("");
                                                     Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show();
                                                     ProgressUtils.cancelLoading();
@@ -420,7 +449,7 @@ public class UserActivity extends AppCompatActivity {
 
         public class Viewholder extends RecyclerView.ViewHolder {
 
-            TextView txt_user_name, txt_email, txt_phone,wallet,status;
+            TextView txt_user_name, txt_email, txt_phone,wallet,status,pass,bank_name,upi;
             TextView btn_active,btn_inactive,passbook;
             ImageView wallet_btn;
             public Viewholder(@NonNull View itemView) {
@@ -435,6 +464,9 @@ public class UserActivity extends AppCompatActivity {
                 btn_inactive = itemView.findViewById(R.id.inactive);
                 wallet_btn = itemView.findViewById(R.id.wallet_btn);
                 passbook = itemView.findViewById(R.id.passbook);
+                bank_name = itemView.findViewById(R.id.bank_details);
+                upi = itemView.findViewById(R.id.upi);
+                pass = itemView.findViewById(R.id.pass);
             }
         }
     }

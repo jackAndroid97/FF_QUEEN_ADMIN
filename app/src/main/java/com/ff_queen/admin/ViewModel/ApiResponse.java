@@ -358,52 +358,7 @@ public class ApiResponse extends ViewModel {
     public void approvedRequest(String s_dis_id, String amount, String id,String status,String remarks)
     {
 
-        Call<String> call = myInterface.approved_request(amount,s_dis_id,id,status,remarks);
-        ProgressUtils.showLoadingDialog(context);
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
 
-                if (response.isSuccessful() && response.body() != null)
-                {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response.body());
-
-                        if (jsonObject.getString("rec").equals("1"))
-                        {
-
-                            Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show();
-                            ProgressUtils.cancelLoading();
-                            context.startActivity(new Intent(context,MoneyRequestActivity.class));
-                            ((Activity)context).finish();
-                        }
-                        else
-                        {
-                            Toast.makeText(context, "Not Approved", Toast.LENGTH_SHORT).show();
-                            ProgressUtils.cancelLoading();
-                        }
-
-                    } catch (JSONException e) {
-
-                        Toast.makeText(context, "Something Went wrong", Toast.LENGTH_SHORT).show();
-                        ProgressUtils.cancelLoading();
-                    }
-                }
-                else
-                {
-                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
-                    ProgressUtils.cancelLoading();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
-                Toast.makeText(context, "Slow Network", Toast.LENGTH_SHORT).show();
-                ProgressUtils.cancelLoading();
-            }
-        });
     }
 
 
@@ -460,52 +415,7 @@ public class ApiResponse extends ViewModel {
 
     public void withdrawAllApproved(String user_id, String amount, String id,String status,String remarks)
     {
-        Call<String> call = myInterface.withdraw_approved_all(amount,user_id,id,status,remarks);
-        ProgressUtils.showLoadingDialog(context);
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
 
-                if (response.isSuccessful() && response.body() != null)
-                {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response.body());
-
-                        if (jsonObject.getString("rec").equals("1"))
-                        {
-
-                            Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show();
-                            ProgressUtils.cancelLoading();
-                            context.startActivity(new Intent(context, MainActivity.class));
-                            ((Activity)context).finish();
-                        }
-                        else
-                        {
-                            Toast.makeText(context, "Not Approved", Toast.LENGTH_SHORT).show();
-                            ProgressUtils.cancelLoading();
-                        }
-
-                    } catch (JSONException e) {
-
-                        Toast.makeText(context, "Something Went wrong", Toast.LENGTH_SHORT).show();
-                        ProgressUtils.cancelLoading();
-                    }
-                }
-                else
-                {
-                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
-                    ProgressUtils.cancelLoading();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
-                Toast.makeText(context, "Slow Network", Toast.LENGTH_SHORT).show();
-                ProgressUtils.cancelLoading();
-            }
-        });
     }
 
 

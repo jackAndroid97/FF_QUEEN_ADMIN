@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,7 +55,9 @@ public class SuperDistributorWithdrawActivity extends AppCompatActivity {
     private List<Withdraw_All_Request_Model> withdraw_request_models = new ArrayList<>();
     private WithdrawAllRequestAdapter adapter;
     private static final String type="Super Distributor";
+    private String[] sample = {"MANUALLY","REQUEST"};
     String p_type,date;
+    String type_txt="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,30 +80,42 @@ public class SuperDistributorWithdrawActivity extends AppCompatActivity {
         binding.contentSuperDistributorWithdraw.rvMoneyRequest.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         p_type=getIntent().getExtras().getString("type");
         date=getIntent().getExtras().getString("date");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, sample);
+
+        binding.contentSuperDistributorWithdraw.type.setAdapter(adapter);
         if(p_type.equals("request")){
 
             fetchAllWithdrawRequest("");
+            binding.contentSuperDistributorWithdraw.type.setVisibility(View.GONE);
         }else{
 
-            fetchAllWithdrawRequestTwo("");
+            fetchAllWithdrawRequestTwo("","");
+            binding.contentSuperDistributorWithdraw.type.setVisibility(View.VISIBLE);
+
         }
         binding.contentSuperDistributorWithdraw.buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String name=binding.contentSuperDistributorWithdraw.name.getText().toString();
-                if(name.equals("")){
-                    binding.contentSuperDistributorWithdraw.name.setError("Enter mobile number");
-                }else{
+
                     if(p_type.equals("request")){
                         fetchAllWithdrawRequest(name);
                     }else{
-                        fetchAllWithdrawRequestTwo(name);
+                        fetchAllWithdrawRequestTwo(name,type_txt);
                     }
 
-                }
+
             }
         });
 
+        binding.contentSuperDistributorWithdraw.type.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                type_txt=binding.contentSuperDistributorWithdraw.type.getText().toString();
+            }
+        });
 
      /*   apiResponse.getAllWithdrawRequest().observe(this, new Observer<List<Withdraw_All_Request_Model>>() {
             @Override
@@ -136,11 +153,11 @@ public class SuperDistributorWithdrawActivity extends AppCompatActivity {
                                         jsonObject.getString("id"),
                                         jsonObject.getString("user_id"),
                                         jsonObject.getString("name"),
-                                        jsonObject.getString("new_amount")+".00",
+                                        jsonObject.getString("new_amount"),
                                         jsonObject.getString("date"),
                                         jsonObject.getString("bank_name"),
-                                        jsonObject.getString("account_no"),
-                                        jsonObject.getString("ifsc_code"),
+                                        jsonObject.getString("account_number"),
+                                        jsonObject.getString("ifsc_number"),
                                         jsonObject.getString("mobile"),
                                         jsonObject.getString("wallet"),
                                         jsonObject.getString("time"),
@@ -170,8 +187,8 @@ public class SuperDistributorWithdrawActivity extends AppCompatActivity {
             }
         });
     }
-    private void fetchAllWithdrawRequestTwo(String number) {
-        Call<String> call = myInterface.fetch_all_withdraw_req_two(date,number);
+    private void fetchAllWithdrawRequestTwo(String number,String type) {
+        Call<String> call = myInterface.fetch_all_withdraw_req_two(date,number,type);
         ProgressUtils.showLoadingDialog(SuperDistributorWithdrawActivity.this);
         call.enqueue(new Callback<String>() {
             @Override
@@ -194,11 +211,11 @@ public class SuperDistributorWithdrawActivity extends AppCompatActivity {
                                         jsonObject.getString("id"),
                                         jsonObject.getString("user_id"),
                                         jsonObject.getString("name"),
-                                        jsonObject.getString("new_amount")+".00",
+                                        jsonObject.getString("new_amount"),
                                         jsonObject.getString("date"),
                                         jsonObject.getString("bank_name"),
-                                        jsonObject.getString("account_no"),
-                                        jsonObject.getString("ifsc_code"),
+                                        jsonObject.getString("account_number"),
+                                        jsonObject.getString("ifsc_number"),
                                         jsonObject.getString("mobile"),
                                         jsonObject.getString("wallet"),
                                         jsonObject.getString("time"),
@@ -305,6 +322,12 @@ public class SuperDistributorWithdrawActivity extends AppCompatActivity {
 
                 e.printStackTrace();
             }
+            if(model.getBank_name().equals("")){
+                holder.binding.bankDetails.setVisibility(View.GONE);
+            }
+            else{
+                holder.binding.bankDetails.setVisibility(View.VISIBLE);
+            }
 
             if(p_type.equals("request")){
                 holder.binding.btnApproed.setVisibility(View.VISIBLE);
@@ -343,16 +366,112 @@ public class SuperDistributorWithdrawActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                    apiResponse.withdrawAllApproved(model.getUser_id(),model.getAmount(),model.getId(),"ACCEPT",holder.binding.remarks.getText().toString());
+                  //  apiResponse.withdrawAllApproved(model.getUser_id(),model.getAmount(),model.getId(),"ACCEPT",holder.binding.remarks.getText().toString());
+                    Call<String> call = myInterface.withdraw_approved_all(model.getAmount(),model.getUser_id(),model.getId(),"ACCEPT",holder.binding.remarks.getText().toString());
+                    ProgressUtils.showLoadingDialog(context);
+                    call.enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
 
+                            if (response.isSuccessful() && response.body() != null)
+                            {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response.body());
+
+                                    if (jsonObject.getString("rec").equals("1"))
+                                    {
+
+                                        Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show();
+                                        ProgressUtils.cancelLoading();
+                                        Bundle bundle=new Bundle();
+                                        bundle.putString("type",type);
+                                        bundle.putString("date",date);
+                                        startActivity(new Intent(SuperDistributorWithdrawActivity.this,SuperDistributorWithdrawActivity.class).putExtras(bundle));
+                                        finish();
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(context, "Not Approved", Toast.LENGTH_SHORT).show();
+                                        ProgressUtils.cancelLoading();
+                                    }
+
+                                } catch (JSONException e) {
+
+                                    Toast.makeText(context, "Something Went wrong", Toast.LENGTH_SHORT).show();
+                                    ProgressUtils.cancelLoading();
+                                }
+                            }
+                            else
+                            {
+                                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                                ProgressUtils.cancelLoading();
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+
+                            Toast.makeText(context, "Slow Network", Toast.LENGTH_SHORT).show();
+                            ProgressUtils.cancelLoading();
+                        }
+                    });
                 }
             });
             holder.binding.btnReject.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    apiResponse.withdrawAllApproved(model.getUser_id(),model.getAmount(),model.getId(),"REJECT",holder.binding.remarks.getText().toString());
+                    //apiResponse.withdrawAllApproved(model.getUser_id(),model.getAmount(),model.getId(),"REJECT",holder.binding.remarks.getText().toString());
+                    Call<String> call = myInterface.withdraw_approved_all(model.getAmount(),model.getUser_id(),model.getId(),"REJECT",holder.binding.remarks.getText().toString());
+                    ProgressUtils.showLoadingDialog(context);
+                    call.enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
 
+                            if (response.isSuccessful() && response.body() != null)
+                            {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response.body());
+
+                                    if (jsonObject.getString("rec").equals("1"))
+                                    {
+
+                                        Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show();
+                                        ProgressUtils.cancelLoading();
+                                        Bundle bundle=new Bundle();
+                                        bundle.putString("type",type);
+                                        bundle.putString("date",date);
+                                        startActivity(new Intent(SuperDistributorWithdrawActivity.this,SuperDistributorWithdrawActivity.class).putExtras(bundle));
+                                        finish();
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(context, "Not Approved", Toast.LENGTH_SHORT).show();
+                                        ProgressUtils.cancelLoading();
+                                    }
+
+                                } catch (JSONException e) {
+
+                                    Toast.makeText(context, "Something Went wrong", Toast.LENGTH_SHORT).show();
+                                    ProgressUtils.cancelLoading();
+                                }
+                            }
+                            else
+                            {
+                                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                                ProgressUtils.cancelLoading();
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+
+                            Toast.makeText(context, "Slow Network", Toast.LENGTH_SHORT).show();
+                            ProgressUtils.cancelLoading();
+                        }
+                    });
                 }
             });
 

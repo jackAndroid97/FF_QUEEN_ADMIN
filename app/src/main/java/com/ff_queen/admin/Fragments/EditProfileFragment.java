@@ -32,7 +32,7 @@ public class EditProfileFragment extends Fragment {
 
     private TextInputLayout email, password;
     private MyInterface myInterface;
-    EditText w_number,youtube_link;
+    EditText w_number,youtube_link,h_number;
     private User user;
     private Button btn_save;
 
@@ -50,6 +50,7 @@ public class EditProfileFragment extends Fragment {
         btn_save = view.findViewById(R.id.btn_save);
         w_number = view.findViewById(R.id.w_number);
         youtube_link = view.findViewById(R.id.youtube);
+        h_number = view.findViewById(R.id.h_number);
 
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +100,7 @@ public class EditProfileFragment extends Fragment {
                             password.getEditText().setText(jsonObject.getString("password"));
                             w_number.setText(jsonObject.getString("whatsapp"));
                             youtube_link.setText(jsonObject.getString("link"));
+                            h_number.setText(jsonObject.getString("mobile"));
                             ProgressUtils.cancelLoading();
                         }
                     } catch (JSONException e) {
@@ -120,7 +122,7 @@ public class EditProfileFragment extends Fragment {
     {
         Call<String> call = myInterface.update_admin_profile(user.getUser_id(),
                 email.getEditText().getText().toString(),
-                password.getEditText().getText().toString(),w_number.getText().toString(),youtube_link.getText().toString());
+                password.getEditText().getText().toString(),w_number.getText().toString(),youtube_link.getText().toString(),h_number.getText().toString());
         ProgressUtils.showLoadingDialog(getContext());
         call.enqueue(new Callback<String>() {
             @Override

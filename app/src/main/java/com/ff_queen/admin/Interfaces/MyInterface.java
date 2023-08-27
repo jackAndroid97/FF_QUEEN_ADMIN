@@ -245,7 +245,8 @@ public interface MyInterface {
                                      @Field("email") String email,
                                      @Field("pass")String pass,
                                      @Field("w_number")String wNum,
-                                     @Field("link")String link
+                                     @Field("link")String link,
+                                     @Field("mobile")String mobile
                                       );
 
 
@@ -280,7 +281,7 @@ public interface MyInterface {
 
     @FormUrlEncoded
     @POST("fetch_total_gameplay.php")
-    Call<String> fetch_total_gameplay(@Field("date")String date);
+    Call<String> fetch_total_gameplay(@Field("date")String date,@Field("number")String number);
 
     @FormUrlEncoded
     @POST("win_amount_details.php")
@@ -330,7 +331,7 @@ public interface MyInterface {
     Call<String> fetch_money_request(@Field("number") String number,@Field("type") String type);
     @FormUrlEncoded
     @POST("fetch_money_request_two.php")
-    Call<String> fetch_money_request_two(@Field("date") String date,@Field("number") String number);
+    Call<String> fetch_money_request_two(@Field("date") String date,@Field("number") String number,@Field("added_by") String add);
 
     @FormUrlEncoded
     @POST("approved_request.php")
@@ -347,7 +348,7 @@ public interface MyInterface {
 
     @FormUrlEncoded
     @POST("fetch_withdraw_req_two.php")
-    Call<String> fetch_all_withdraw_req_two(@Field("date") String amount,@Field("number") String number);
+    Call<String> fetch_all_withdraw_req_two(@Field("date") String amount,@Field("number") String number,@Field("added_by") String added_by);
 
     @FormUrlEncoded
     @POST("withdraw_approved.php")

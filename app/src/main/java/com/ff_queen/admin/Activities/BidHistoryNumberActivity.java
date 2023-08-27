@@ -124,12 +124,13 @@ public class BidHistoryNumberActivity extends AppCompatActivity {
         binding.contentBidHistoryNumber.buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fetch_transaction_history(binding.contentBidHistoryNumber.digit.getText().toString(),start_date,b_id);
+                fetch_transaction_history(binding.contentBidHistoryNumber.digit.getText().toString(),binding.contentBidHistoryNumber.textDate.getText().toString(),b_id);
+                fetchBaji();
             }
         });
         binding.contentBidHistoryNumber.baji.setOnItemClickListener((parent, view, position, id) -> {
             Baji_Model baji_model = (Baji_Model) parent.getItemAtPosition(position);
-            b_id = baji_model.getId();
+            b_id = baji_model.getBaji();
             binding.contentBidHistoryNumber.baji.setText(baji_model.getName());
 
         });
@@ -228,6 +229,7 @@ public class BidHistoryNumberActivity extends AppCompatActivity {
                             }
                             adapter = new Transaction_Adapter(BidHistoryNumberActivity.this,payment_models);
                             rv_passbook.setAdapter(adapter);
+
                             ProgressUtils.cancelLoading();
 
                         }
@@ -269,6 +271,7 @@ public class BidHistoryNumberActivity extends AppCompatActivity {
                             ProgressUtils.cancelLoading();
 
                         } else {
+                            baji_models.clear();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                                 baji_models.add(new Baji_Model(

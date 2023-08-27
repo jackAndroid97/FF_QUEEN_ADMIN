@@ -61,7 +61,7 @@ public class LedgerReportActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         binding.contentLedgerReport.textDate.setText(date);
-        total_user("");
+        total_user(date);
         binding.contentLedgerReport.aMoneyView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
